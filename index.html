@@ -728,62 +728,84 @@ ppop.querySelector(".px").addEventListener("click",e=>{e.stopPropagation();close
 
 /* ---------- vista de perfil (sección desde el sur) del puente grúa: misma lógica y mismo ciclo de 12 s ---------- */
 const pperfil=document.getElementById("pperfil");
-function perfilScene(kind){const k=80,X0=-6.5,Z0=8.0;const X=x=>((x-X0)*k).toFixed(1),Z=z=>((Z0-z)*k).toFixed(1);const W=19*k,H=8.4*k;
-  const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`});const defs=sv("defs",{});
+/* paleta común (referencias: monoviga amarilla, polipasto azul, percha verde, gancho C amarillo, zunchos naranja, tacos de madera) */
+const CP={amar:["#ffe27a","#f2c232","#e0ad1f","#9c7414"],verde:["#5fd3a0","#1f8f5f","#136944"],azul:["#6aa6ff","#2f6db5","#1b3f7a"],gris:["#eef2f5","#b4bec8","#6d7883"],dark:["#5b6670","#1f262d"],mad:["#d9b071","#8a6236"],nar:"#f08a24",hor:["#d8d6cf","#9b9890"]};
+function gradDefs(defs,pre){const lg=(id,st,x2="0",y2="1")=>{const e=sv("linearGradient",{id:pre+id,x1:"0",y1:"0",x2,y2});st.forEach(([o,c])=>e.append(sv("stop",{offset:o,"stop-color":c})));defs.append(e);};
+  lg("amar",[["0",CP.amar[0]],["0.45",CP.amar[1]],["0.55",CP.amar[2]],["1",CP.amar[3]]]);lg("amarH",[["0",CP.amar[0]],["0.45",CP.amar[1]],["0.55",CP.amar[2]],["1",CP.amar[3]]],"1","0");
+  lg("verde",[["0",CP.verde[0]],["0.5",CP.verde[1]],["1",CP.verde[2]]]);lg("verdeH",[["0",CP.verde[0]],["0.5",CP.verde[1]],["1",CP.verde[2]]],"1","0");
+  lg("azul",[["0",CP.azul[0]],["0.5",CP.azul[1]],["1",CP.azul[2]]]);lg("acero",[["0",CP.gris[0]],["0.5",CP.gris[1]],["1",CP.gris[2]]],"1","0.3");lg("aceroV",[["0",CP.gris[0]],["0.5",CP.gris[1]],["1",CP.gris[2]]]);
+  lg("dark",[["0",CP.dark[0]],["1",CP.dark[1]]]);lg("mad",[["0",CP.mad[0]],["1",CP.mad[1]]]);lg("hor",[["0",CP.hor[0]],["1",CP.hor[1]]]);lg("tubo",[["0","#8d99a4"],["0.5","#e6ecf0"],["1","#5f6a75"]]);
+  const rg=sv("radialGradient",{id:pre+"rollo",cx:"0.42",cy:"0.38",r:"0.7"});[["0","#f3f6f8"],["0.5","#b9c2ca"],["1","#66717b"]].forEach(([o,c])=>rg.append(sv("stop",{offset:o,"stop-color":c})));defs.append(rg);}
+function perfilScene(kind){const k=80,X0=-6.5,Z0=8.2;const X=x=>((x-X0)*k).toFixed(1),Z=z=>((Z0-z)*k).toFixed(1);const W=19*k,H=9.4*k;
+  const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`});const defs=sv("defs",{});gradDefs(defs,"p_");
   const lg=(id,stops,x2="0",y2="1")=>{const e=sv("linearGradient",{id,x1:"0",y1:"0",x2,y2});stops.forEach(([o,c])=>e.append(sv("stop",{offset:o,"stop-color":c})));defs.append(e);};
-  lg("p_sky",[["0","#f3f6f8"],["1","#cfd7de"]]);lg("p_piso",[["0","#b9c1c8"],["1","#8f9aa3"]]);lg("p_viga",[["0","#ffe27a"],["0.5","#f2c232"],["1","#9c7414"]]);lg("p_col",[["0","#6b7680"],["0.5","#aeb8c2"],["1","#4b5563"]],"1","0");
-  lg("p_acero",[["0","#e6ecf0"],["0.5","#aeb8c2"],["1","#6d7883"]]);lg("p_dark",[["0","#55606b"],["1","#1f262d"]]);lg("p_azul",[["0","#3d6fb6"],["1","#1b3f7a"]]);lg("p_mad",[["0","#c69a63"],["1","#8a6236"]]);lg("p_tubo",[["0","#9aa6b1"],["0.5","#e6ecf0"],["1","#6d7883"]]);lg("p_semi",[["0","#f7f7f2"],["1","#c9c9c0"]]);
-  const rg=sv("radialGradient",{id:"p_rollo",cx:"0.4",cy:"0.35",r:"0.7"});[["0","#f1f4f6"],["0.45","#b8c1c9"],["1","#6b7680"]].forEach(([o,c])=>rg.append(sv("stop",{offset:o,"stop-color":c})));defs.append(rg);
+  lg("p_sky",[["0","#f6f8fa"],["1","#d5dde4"]]);lg("p_piso",[["0","#c3cbd2"],["1","#97a2ab"]]);lg("p_tierra",[["0","#8a6a4a"],["1","#5e4630"]]);
   const f=sv("filter",{id:"p_sombra",x:"-20%",y:"-20%",width:"140%",height:"160%"});f.append(sv("feDropShadow",{dx:"3",dy:"6",stdDeviation:"4","flood-color":"#000","flood-opacity":"0.35"}));defs.append(f);svg.append(defs);
   const R=(x,z,w,h,fill,extra)=>sv("rect",Object.assign({x:X(x),y:Z(z+h),width:(w*k).toFixed(1),height:(h*k).toFixed(1),fill},extra||{}));
   const T=(x,z,t,o)=>{const e=sv("text",Object.assign({x:X(x),y:Z(z),"font-family":"Inter, Arial, sans-serif","font-size":"13","font-weight":"600",fill:"#3a4652","text-anchor":"middle"},o||{}));e.textContent=t;return e;};
-  /* fondo, piso, columnas y caminos */
-  svg.append(sv("rect",{x:0,y:0,width:W,height:H,fill:"url(#p_sky)"}));svg.append(sv("rect",{x:0,y:Z(0),width:W,height:0.4*k,fill:"url(#p_piso)"}));
-  for(let x=-6;x<12.5;x+=1)svg.append(sv("line",{x1:X(x),y1:Z(0),x2:X(x),y2:Z(-0.4),stroke:"#7f8a94","stroke-width":"1",opacity:.35}));
-  [-3.4,10.5].forEach(x=>{svg.append(R(x-0.2,0,0.4,6.0,"url(#p_col)",{stroke:"#2c3e50","stroke-width":"1.2"}));svg.append(R(x-0.45,5.6,0.9,0.4,"url(#p_dark)",{rx:"3"}));svg.append(R(x-0.5,0,1.0,0.12,"#2c3e50"));});
-  svg.append(R(-3.4,6.0,13.9,0.1,"#6b7680"));                                                       /* riel */
-  /* semi en la dársena (vista lateral): chasis, piso de carga a 1,3 m, ruedas */
-  const semi=sv("g",{opacity:"0.5"});svg.append(semi);semi.append(R(-4.6,1.15,13.6,0.15,"#2b2b2b"));semi.append(R(-4.6,1.3,13.6,0.06,"url(#p_semi)",{stroke:"#333","stroke-width":"1"}));
-  [-3.2,-2.2,3.6,4.9,6.2].forEach(x=>{semi.append(sv("circle",{cx:X(x),cy:Z(0.52),r:(0.52*k).toFixed(1),fill:"#1c1c1c"}));semi.append(sv("circle",{cx:X(x),cy:Z(0.52),r:(0.28*k).toFixed(1),fill:"#8f9aa3"}));});
-  semi.append(R(-4.6,0.95,0.3,0.4,"#c0392b"));semi.append(R(9.0,1.2,0.12,0.5,"#2b2b2b"));svg.append(T(7.0,1.5,"SEMI DE MP en la dársena (adelante, en 2.º plano) · piso de carga 1,3 m",{"font-size":"12",fill:"#5a6670"}));
-  /* puente: viga cajón + carro + aparejo (animados) */
-  const br=sv("g",{},"pbridge");br.append(R(-3.4,6.1,13.9,0.7,"url(#p_viga)",{stroke:"#6b4f0e","stroke-width":"1.2",filter:"url(#p_sombra)"}));br.append(R(-3.4,6.42,13.9,0.06,"#9c7414",{opacity:.7}));
-  const tr=sv("g",{},"ptrolley");tr.append(R(-0.7,6.8,1.4,0.75,"url(#p_dark)",{rx:"4",stroke:"#0f1418","stroke-width":"1"}));tr.append(sv("circle",{cx:X(0.3),cy:Z(7.15),r:(0.22*k).toFixed(1),fill:"url(#p_azul)",stroke:"#0f1418"}));tr.append(R(-0.55,6.95,0.8,0.45,"url(#p_acero)",{rx:"12"}));
-  [-0.55,0.55].forEach(dx=>tr.append(sv("circle",{cx:X(dx),cy:Z(6.82),r:(0.1*k).toFixed(1),fill:"#0f1418"})));
-  const cab=sv("g",{},"pcable");cab.append(sv("rect",{x:(X(0)-0.03*k).toFixed(1),y:0,width:(0.06*k).toFixed(1),height:k,fill:"#1f262d"}));cab.style.transformOrigin=`${X(0)}px 0px`;cab.setAttribute("transform",`translate(0 ${Z(6.8)})`);
-  const hk=sv("g",{},"phook");hk.setAttribute("transform",`translate(${X(0)} ${Z(6.8)})`);hk.append(sv("rect",{x:(-0.25*k).toFixed(1),y:0,width:(0.5*k).toFixed(1),height:(0.5*k).toFixed(1),rx:"4",fill:"url(#p_viga)",stroke:"#6b4f0e","stroke-width":"1"}));hk.append(sv("path",{d:`M 0 ${(0.5*k).toFixed(1)} q 0 30 ${(0.2*k).toFixed(1)} 30 q ${(0.2*k).toFixed(1)} 0 ${(0.2*k).toFixed(1)} -22`,fill:"none",stroke:"#1f262d","stroke-width":"7","stroke-linecap":"round"}));
-  /* cargas y destinos (coordenadas locales: origen en el punto de apoyo, z hacia arriba) */
   const Xl=x=>(x*k).toFixed(1),Zl=z=>(-z*k).toFixed(1);const Rl=(x,z,w,h,fill,extra)=>sv("rect",Object.assign({x:Xl(x),y:Zl(z+h),width:(w*k).toFixed(1),height:(h*k).toFixed(1),fill},extra||{}));
-  const paqueteP=(w,h)=>{const q=sv("g",{});q.append(Rl(-w/2,0,w,0.1,"url(#p_mad)"));q.append(Rl(-w/2,0.1,w,h,"url(#p_acero)",{stroke:"#2c3e50","stroke-width":"1.2"}));for(let i=1;i<6;i++)q.append(Rl(-w/2,0.1+h*i/6,w,0.01,"#55606b",{opacity:.6}));return q;};
-  const perchaP=w=>{const q=sv("g",{});q.append(Rl(-1.3,0,2.6,0.16,"url(#p_viga)",{stroke:"#6b4f0e","stroke-width":"1"}));[-1,0,1].forEach(dx=>{q.append(Rl(dx-0.05,-0.05,0.1,0.26,"url(#p_azul)"));q.append(sv("line",{x1:Xl(dx),y1:Zl(-0.05),x2:Xl(dx),y2:Zl(-0.45),stroke:"#1f262d","stroke-width":"3","stroke-dasharray":"4 3"}));});return q;};
-  const rolloS=()=>{const q=sv("g",{});q.append(sv("circle",{cx:Xl(0),cy:Zl(0.687),r:(0.687*k).toFixed(1),fill:"url(#p_rollo)",stroke:"#2c3e50","stroke-width":"1.5"}));q.append(sv("circle",{cx:Xl(0),cy:Zl(0.687),r:(0.254*k).toFixed(1),fill:"#f6f7f8",stroke:"#2c3e50"}));return q;};
+  /* fondo, piso, fundaciones (zapata 1,1 × 1,1 × 1,0), columnas y viga carrilera IPE330 vista de punta */
+  svg.append(sv("rect",{x:0,y:0,width:W,height:H,fill:"url(#p_sky)"}));svg.append(sv("rect",{x:0,y:Z(0),width:W,height:1.2*k,fill:"url(#p_tierra)"}));svg.append(sv("rect",{x:0,y:Z(0),width:W,height:0.18*k,fill:"url(#p_piso)"}));
+  [-3.4,10.5].forEach(x=>{svg.append(R(x-0.55,-1.0,1.1,1.0,"#b9b6ad",{stroke:"#8f8c84","stroke-width":"1"}));svg.append(R(x-0.5,0,1.0,0.04,"#4b5563"));svg.append(R(x-0.17,0,0.34,6.3,"url(#p_acero)",{stroke:"#2c3e50","stroke-width":"1.2"}));
+    svg.append(R(x-0.35,0.04,0.7,0.05,"#4b5563"));svg.append(R(x-0.3,6.3,0.6,0.08,"#4b5563"));          /* placa de base y ménsula */
+    svg.append(R(x-0.08,6.38,0.16,0.33,"#8d99a4",{stroke:"#2c3e50","stroke-width":"1"}));svg.append(R(x-0.16,6.38,0.32,0.03,"#2c3e50"));svg.append(R(x-0.16,6.68,0.32,0.03,"#2c3e50")); /* IPE330 de punta */
+    svg.append(T(x,6.85,"IPE330",{"font-size":"11",fill:"#5a6670"}));});
+  svg.append(T(-5.6,-0.6,"zapata 1,1 × 1,1 × 1,0",{"text-anchor":"start","font-size":"11",fill:"#f3efe8"}));
+  /* semi en la dársena: cabina + chasis + piso de carga 1,3 m (adelante de las pilas → translúcido) */
+  const semi=sv("g",{opacity:"0.45"});svg.append(semi);
+  semi.append(R(-4.6,1.12,13.6,0.18,"#2b2b2b"));semi.append(R(-4.6,1.3,13.6,0.07,"url(#p_hor)",{stroke:"#5b5b55","stroke-width":"1"}));
+  semi.append(R(-6.3,0.6,1.7,2.4,"#f2f2f0",{rx:"6",stroke:"#8f8c84","stroke-width":"1"}));semi.append(R(-6.1,1.9,1.2,0.9,"#9fb6c9",{rx:"4"}));semi.append(R(-6.3,0.6,1.7,0.3,"#2b2b2b"));
+  [-5.6,-2.9,3.9,5.2,6.5].forEach(x=>{semi.append(sv("circle",{cx:X(x),cy:Z(0.52),r:(0.52*k).toFixed(1),fill:"#1c1c1c"}));semi.append(sv("circle",{cx:X(x),cy:Z(0.52),r:(0.26*k).toFixed(1),fill:"#8f9aa3"}));});
+  svg.append(T(7.2,1.55,"semi de MP en la dársena (en primer plano, translúcido) · piso de carga 1,3 m",{"font-size":"11",fill:"#5a6670"}));
+  /* monoviga: viga cajón amarilla, carro + polipasto eléctrico colgado del ala inferior, cable, aparejo */
+  const br=sv("g",{},"pbridge");br.append(R(-3.4,5.55,13.9,0.62,"url(#p_amar)",{stroke:"#6b4f0e","stroke-width":"1.2",filter:"url(#p_sombra)"}));br.append(R(-3.4,5.84,13.9,0.05,"#9c7414",{opacity:.7}));br.append(R(-3.4,5.55,13.9,0.06,"#6b4f0e",{opacity:.5}));
+  svg.append(T(3.5,6.25,"monoviga 2 t · luz 13,9 m · mín. 5 m libres bajo el puente",{"font-size":"11",fill:"#5a6670"}));
+  const tr=sv("g",{},"ptrolley");tr.append(Rl(-0.5,5.17,1.0,0.36,"url(#p_dark)",{rx:"3"}));[-0.35,0.35].forEach(dx=>tr.append(sv("circle",{cx:Xl(dx),cy:Zl(5.5),r:(0.1*k).toFixed(1),fill:"#f2c232",stroke:"#6b4f0e","stroke-width":"1"})));
+  tr.append(Rl(-0.62,4.55,1.24,0.62,"url(#p_azul)",{rx:"6",stroke:"#1b3f7a","stroke-width":"1"}));tr.append(Rl(-0.52,4.65,0.74,0.42,"url(#p_acero)",{rx:"10"}));for(let i=0;i<7;i++)tr.append(Rl(-0.49+i*0.1,4.65,0.02,0.42,"#6d7883",{opacity:.5}));
+  tr.append(sv("circle",{cx:Xl(0.42),cy:Zl(4.86),r:(0.17*k).toFixed(1),fill:"#1b3f7a"}));tr.append(sv("circle",{cx:Xl(0.42),cy:Zl(4.86),r:(0.07*k).toFixed(1),fill:"#dfe6ec"}));
+  tr.setAttribute("transform",`translate(${X(0)} ${Z(0)})`);
+  const cab=sv("g",{},"pcable");cab.append(sv("rect",{x:(X(0)-0.02*k).toFixed(1),y:0,width:(0.04*k).toFixed(1),height:k,fill:"#1f262d"}));cab.style.transformOrigin=`${X(0)}px 0px`;cab.setAttribute("transform",`translate(0 ${Z(4.55)})`);
+  const hk=sv("g",{},"phook");hk.setAttribute("transform",`translate(${X(0)} ${Z(4.55)})`);hk.append(sv("rect",{x:(-0.14*k).toFixed(1),y:0,width:(0.28*k).toFixed(1),height:(0.4*k).toFixed(1),rx:"4",fill:"url(#p_amar)",stroke:"#6b4f0e","stroke-width":"1"}));
+  hk.append(sv("path",{d:`M 0 ${(0.4*k).toFixed(1)} q 0 26 ${(0.17*k).toFixed(1)} 26 q ${(0.17*k).toFixed(1)} 0 ${(0.17*k).toFixed(1)} -20`,fill:"none",stroke:"#f2c232","stroke-width":"7","stroke-linecap":"round"}));
+  /* cargas (origen local = punto de apoyo inferior, centro en x) */
+  const paqueteP=(w,h,strap)=>{const q=sv("g",{});[-1,0,1].forEach(i=>q.append(Rl(i*(w/2-0.2)-0.05,0,0.1,0.1,"url(#p_mad)")));q.append(Rl(-w/2,0.1,w,h,"url(#p_aceroV)",{stroke:"#2c3e50","stroke-width":"1.2"}));for(let i=1;i<6;i++)q.append(Rl(-w/2,0.1+h*i/6,w,0.008,"#55606b",{opacity:.6}));
+    if(strap)[-1,0,1].forEach(i=>q.append(Rl(i*(w/2-0.2)-0.02,0,0.04,h+0.12,CP.nar)));return q;};
+  const perchaP=w=>{const q=sv("g",{});const zb=0.95;q.append(Rl(-1.3,zb,2.6,0.16,"url(#p_verde)",{stroke:"#0f4a30","stroke-width":"1",rx:"2"}));q.append(Rl(-1.3,zb+0.07,2.6,0.03,"#5fd3a0",{opacity:.6}));
+    [-1,0,1].forEach(dx=>{q.append(Rl(dx-0.09,zb-0.08,0.18,0.32,"#8d99a4",{stroke:"#2c3e50","stroke-width":"1"}));[-0.08,0.08].forEach(o=>q.append(sv("line",{x1:Xl(dx+o),y1:Zl(zb-0.08),x2:Xl(dx+o*7),y2:Zl(0.12),stroke:"#2b2b2b","stroke-width":"2.4","stroke-dasharray":"3 2.5"})));});
+    q.append(sv("path",{d:`M ${Xl(-0.5)} ${Zl(zb+0.16)} L 0 ${Zl(zb+0.65)} L ${Xl(0.5)} ${Zl(zb+0.16)}`,fill:"none",stroke:"#2b2b2b","stroke-width":"3"}));q.append(sv("circle",{cx:0,cy:Zl(zb+0.66),r:"6",fill:"#c0392b"}));return q;};
+  const cuna=()=>{const q=sv("g",{});[-0.45,0.45].forEach(dx=>q.append(Rl(dx-0.12,0,0.24,0.14,"url(#p_mad)",{stroke:"#5a3d1c","stroke-width":".8"})));return q;};
+  const rolloS=()=>{const q=sv("g",{});q.append(cuna());q.append(sv("circle",{cx:0,cy:Zl(0.78),r:(0.687*k).toFixed(1),fill:"url(#p_rollo)",stroke:"#2c3e50","stroke-width":"1.5"}));for(let r=0.3;r<0.68;r+=0.05)q.append(sv("circle",{cx:0,cy:Zl(0.78),r:(r*k).toFixed(1),fill:"none",stroke:"#55606b","stroke-width":".6",opacity:.5}));
+    q.append(sv("circle",{cx:0,cy:Zl(0.78),r:(0.254*k).toFixed(1),fill:"#f6f7f8",stroke:"#2c3e50"}));q.append(Rl(-0.03,0.09,0.06,1.4,CP.nar,{opacity:.9}));return q;};
   const rolloA=()=>{const q=sv("g",{});q.append(Rl(-0.687,0,1.374,0.22,"url(#p_acero)",{rx:"4",stroke:"#2c3e50","stroke-width":"1.2"}));q.append(Rl(-0.254,0,0.508,0.22,"#eef2f5",{stroke:"#2c3e50","stroke-width":".8"}));return q;};
-  const ganchoP=()=>{const q=sv("g",{});q.append(sv("path",{d:`M ${Xl(0)} ${Zl(1.6)} L ${Xl(0)} ${Zl(-0.1)} L ${Xl(0.9)} ${Zl(-0.1)} L ${Xl(0.9)} ${Zl(0.12)} L ${Xl(0.22)} ${Zl(0.12)} L ${Xl(0.22)} ${Zl(1.6)} Z`,fill:"url(#p_azul)",stroke:"#0f1418","stroke-width":"1.2","stroke-linejoin":"round"}));return q;};
-  const atadoP=()=>{const q=sv("g",{});[0,0.1,0.2].forEach(dz=>q.append(Rl(-3,dz,6,0.09,"url(#p_tubo)",{rx:"3",stroke:"#4b5563","stroke-width":".6"})));[-1.5,1.5].forEach(dx=>q.append(Rl(dx-0.04,-0.02,0.08,0.34,"#1f262d")));return q;};
-  const balP=()=>{const q=sv("g",{});q.append(Rl(-1.5,0.5,3,0.18,"url(#p_viga)",{stroke:"#6b4f0e","stroke-width":"1"}));[-0.9,0.9].forEach(dx=>{const tx=dx>0?1.5:-1.5;q.append(sv("line",{x1:Xl(dx),y1:Zl(0.5),x2:Xl(tx),y2:Zl(0.3),stroke:"#2b2b2b","stroke-width":"3"}));q.append(sv("circle",{cx:Xl(dx),cy:Zl(0.5),r:"5",fill:"#1f262d"}));});return q;};
+  const ganchoP=()=>{const q=sv("g",{});/* gancho C basculante: brazo por el ojo (z 0,78) + espalda + lug de izaje */
+    q.append(sv("path",{d:`M ${Xl(0.95)} ${Zl(0.68)} L ${Xl(-0.05)} ${Zl(0.68)} L ${Xl(-0.05)} ${Zl(1.85)} L ${Xl(0.25)} ${Zl(1.85)} L ${Xl(0.25)} ${Zl(0.9)} L ${Xl(0.95)} ${Zl(0.9)} Z`,fill:"url(#p_amar)",stroke:"#6b4f0e","stroke-width":"1.2","stroke-linejoin":"round"}));
+    q.append(sv("circle",{cx:Xl(0.1),cy:Zl(1.78),r:"7",fill:"none",stroke:"#2b2b2b","stroke-width":"3"}));q.append(sv("circle",{cx:Xl(0.1),cy:Zl(1.78),r:"3",fill:"#2b2b2b"}));return q;};
+  const atadoP=()=>{const q=sv("g",{});[0,0.1,0.2].forEach(dz=>q.append(Rl(-3,dz,6,0.09,"url(#p_tubo)",{rx:"3",stroke:"#4b5563","stroke-width":".6"})));[-2.2,2.2].forEach(dx=>q.append(Rl(dx-0.03,-0.01,0.06,0.32,CP.nar)));return q;};
+  const balP=()=>{const q=sv("g",{});const zb=0.75;q.append(Rl(-1.5,zb,3,0.18,"url(#p_amar)",{stroke:"#6b4f0e","stroke-width":"1",rx:"2"}));[-0.9,0.9].forEach(dx=>{const tx=dx>0?2.2:-2.2;q.append(sv("line",{x1:Xl(dx),y1:Zl(zb),x2:Xl(tx),y2:Zl(0.3),stroke:"#2b2b2b","stroke-width":"3"}));q.append(sv("circle",{cx:Xl(dx),cy:Zl(zb),r:"5",fill:"#1f262d"}));});
+    q.append(sv("path",{d:`M ${Xl(-0.5)} ${Zl(zb+0.18)} L 0 ${Zl(zb+0.6)} L ${Xl(0.5)} ${Zl(zb+0.18)}`,fill:"none",stroke:"#2b2b2b","stroke-width":"3"}));return q;};
   const K={
-    chapaC:{sx:0.3,dx:-1.7,sz:1.36,dz:0.73,lh:0.22,src:()=>paqueteP(3.0,0.12),carry:[()=>paqueteP(3.0,0.12),()=>{const g=perchaP();g.setAttribute("transform",`translate(0 ${(-0.6*k).toFixed(1)})`);return g;}],placed:()=>paqueteP(3.0,0.12),gear:1.4,
-      dest:()=>{const q=sv("g",{});const w=sv("g",{transform:`translate(${X(-1.7)} ${Z(0)})`});for(let i=0;i<5;i++){const e=paqueteP(3.0,0.12);e.setAttribute("transform",`translate(0 ${Zl(i*0.22)})`);w.append(e);}q.append(w);q.append(T(-1.7,-0.25,"pila MP‑11 · 3.000 × 1.500 × 3,2",{"font-size":"12"}));return q;}},
-    chapaM:{sx:0.3,dx:3.63,sz:1.36,dz:2.5,lh:0.22,src:()=>paqueteP(1.22,0.12),carry:[()=>paqueteP(1.22,0.12),()=>{const g=perchaP();g.setAttribute("transform",`translate(0 ${(-0.6*k).toFixed(1)})`);return g;}],placed:()=>paqueteP(1.22,0.12),gear:1.4,
-      dest:()=>{const q=sv("g",{});const w=sv("g",{transform:`translate(${X(3.63)} ${Z(0)})`});for(let i=0;i<11;i++){const e=paqueteP(1.22,0.12);e.setAttribute("transform",`translate(0 ${Zl(i*0.22)})`);w.append(e);}q.append(w);q.append(T(3.63,-0.25,"pila MP‑01 · 1.220 × 2.440 × 0,9",{"font-size":"12"}));return q;}},
-    bob:{sx:2.5,dx:1.59,sz:1.36,dz:0.32,lh:1.374,src:rolloS,carry:[rolloS,()=>{const g=ganchoP();g.setAttribute("transform",`translate(${(-0.11*k).toFixed(1)} 0)`);return g;}],carry2:[rolloA,()=>{const g=ganchoP();g.setAttribute("transform",`translate(${(-0.11*k).toFixed(1)} 0)`);return g;}],placed:rolloA,gear:1.1,
-      dest:()=>{const q=sv("g",{});[0.9,2.3].forEach(x=>q.append(R(x-0.05,0,0.1,0.1,"url(#p_mad)")));q.append(T(1.59,-0.25,"pila de ciclo · rollos acostados sobre 2 tacos",{"font-size":"12"}));return q;}},
-    canos:{sx:-0.6,dx:-0.25,sz:1.36,dz:0.85,lh:0.3,src:atadoP,carry:[atadoP,balP],placed:atadoP,gear:1.3,
-      dest:()=>{const q=sv("g",{});q.append(R(-0.4,0,0.3,2.4,"url(#p_col)",{stroke:"#2c3e50","stroke-width":"1"}));[0.35,0.85].forEach(z=>q.append(R(-3.1,z-0.08,6.2,0.08,"#4b5563")));q.append(T(-0.25,-0.25,"cantilever 6,0 × 1,2 · entrega 0,85 m · reserva 0,35 m",{"font-size":"12"}));return q;}}
+    chapaC:{sx:0.3,dx:-1.7,sz:1.37,dz:0.75,top:1.67,src:()=>paqueteP(3.0,0.12,true),carry:[()=>paqueteP(3.0,0.12,true),()=>perchaP(3.0)],placed:()=>paqueteP(3.0,0.12,false),
+      dest:()=>{const q=sv("g",{});const w=sv("g",{transform:`translate(${X(-1.7)} ${Z(0)})`});for(let i=0;i<5;i++){const e=paqueteP(3.0,0.12,false);e.setAttribute("transform",`translate(0 ${Zl(i*0.15)})`);w.append(e);}q.append(w);q.append(T(-1.7,-0.35,"pila MP‑11 · 3.000 × 1.500 × 3,2 · sobre tacos",{"font-size":"11",fill:"#f3efe8"}));return q;}},
+    chapaM:{sx:0.3,dx:3.63,sz:1.37,dz:2.4,top:1.67,src:()=>paqueteP(1.22,0.12,true),carry:[()=>paqueteP(1.22,0.12,true),()=>perchaP(1.22)],placed:()=>paqueteP(1.22,0.12,false),
+      dest:()=>{const q=sv("g",{});const w=sv("g",{transform:`translate(${X(3.63)} ${Z(0)})`});for(let i=0;i<16;i++){const e=paqueteP(1.22,0.12,false);e.setAttribute("transform",`translate(0 ${Zl(i*0.15)})`);w.append(e);}q.append(w);q.append(T(3.63,-0.35,"pila MP‑01 · 1.220 × 2.440 × 0,9",{"font-size":"11",fill:"#f3efe8"}));return q;}},
+    bob:{sx:2.5,dx:1.59,sz:1.37,dz:0.1,top:1.92,src:rolloS,carry:[rolloS,ganchoP],carry2:[rolloA,ganchoP],placed:rolloA,
+      dest:()=>{const q=sv("g",{});[0.9,2.3].forEach(x=>q.append(R(x-0.05,0,0.1,0.1,"url(#p_mad)")));q.append(T(1.59,-0.35,"pila de ciclo · rollos acostados sobre 2 tacos 100 × 100",{"font-size":"11",fill:"#f3efe8"}));return q;}},
+    canos:{sx:-0.6,dx:-0.25,sz:1.37,dz:0.85,top:1.35,src:atadoP,carry:[atadoP,balP],placed:atadoP,
+      dest:()=>{const q=sv("g",{});q.append(R(-0.4,0,0.3,2.3,"url(#p_acero)",{stroke:"#2c3e50","stroke-width":"1"}));q.append(R(-0.55,0,0.6,0.05,"#4b5563"));
+        [0.35,0.85].forEach(z=>{[-2.5,-1.0,0.5,2.0].forEach(x=>{q.append(R(x-0.06,z-0.1,0.12,0.1,"#55606b",{stroke:"#1f262d","stroke-width":".8"}));});q.append(R(-3.1,z-0.03,6.2,0.03,"#4b5563",{opacity:.6}));});
+        q.append(T(-0.25,-0.35,"cantilever 6,0 × 1,2 · brazos de 1,0 m cada 1,5 m · entrega 0,85 m · reserva 0,35 m",{"font-size":"11",fill:"#f3efe8"}));return q;}}
   }[kind];
   svg.append(K.dest());
   const src=K.src();src.setAttribute("class","psrc");src.setAttribute("transform",`translate(${X(K.sx)} ${Z(K.sz)})`);svg.append(src);
   const placed=K.placed();placed.setAttribute("class","pplaced");placed.setAttribute("transform",`translate(${X(K.dx)} ${Z(K.dz)})`);svg.append(placed);
   const carry=sv("g",{},"pcarry");K.carry.forEach(f=>carry.append(f()));if(K.carry2){carry.firstChild.setAttribute("class","pc1");const c2=sv("g",{},"pc2");K.carry2.forEach(f=>c2.append(f()));carry.append(c2);}
-  carry.setAttribute("transform",`translate(0 ${((K.gear+K.lh)*k).toFixed(1)})`);                       /* la carga cuelga debajo del gancho: aparejo + alto de la carga */
+  carry.setAttribute("transform",`translate(0 ${((K.top+0.62)*k).toFixed(1)})`);  /* el punto de izaje de la carga (top) queda en la punta del gancho (0,62 bajo el aparejo) */
   hk.append(carry);const carro=sv("g",{},"pcarro");carro.append(tr);carro.append(cab);carro.append(hk);svg.append(br);svg.append(carro);
-  svg.append(T(-5.6,7.6,"PERFIL · vista desde el sur · escala 1:1 del plano",{"text-anchor":"start","font-size":"12",fill:"#5a6670"}));
-  /* animación: carro (x) y gancho (z) · mismo reloj que la vista en planta */
-  const zUp=5.2,zS=K.sz+K.lh+K.gear,zD=K.dz+K.lh+K.gear;const Lc=z=>((6.8-z)/1).toFixed(3);
-  const px=v=>(v*k).toFixed(1);
+  svg.append(T(-6.3,8.0,"PERFIL · vista desde el sur · a escala del plano (caminos en x −3,4 y 10,5)",{"text-anchor":"start","font-size":"12",fill:"#5a6670"}));
+  const zUp=4.1;const H0=4.55;const zS=K.sz+K.top+0.62,zD=K.dz+K.top+0.62;const Lc=z=>((H0-z)/1).toFixed(3);const px=v=>(v*k).toFixed(1);
   const css=`@keyframes pp_tr_${kind}{0%,24%{transform:translate(${px(K.sx)}px,0)}60%,72%{transform:translate(${px(K.dx)}px,0)}92%,100%{transform:translate(${px(K.sx)}px,0)}}
-@keyframes pp_cb_${kind}{0%,6%{transform:translate(0,${Z(6.8)}px) scaleY(${Lc(zUp)})}12%,18%{transform:translate(0,${Z(6.8)}px) scaleY(${Lc(zS)})}26%,60%{transform:translate(0,${Z(6.8)}px) scaleY(${Lc(zUp)})}66%,72%{transform:translate(0,${Z(6.8)}px) scaleY(${Lc(zD)})}80%,100%{transform:translate(0,${Z(6.8)}px) scaleY(${Lc(zUp)})}}
-@keyframes pp_hk_${kind}{0%,6%{transform:translate(${X(0)}px,${(+Z(6.8)+ (6.8-zUp)*k).toFixed(1)}px)}12%,18%{transform:translate(${X(0)}px,${(+Z(6.8)+(6.8-zS)*k).toFixed(1)}px)}26%,60%{transform:translate(${X(0)}px,${(+Z(6.8)+(6.8-zUp)*k).toFixed(1)}px)}66%,72%{transform:translate(${X(0)}px,${(+Z(6.8)+(6.8-zD)*k).toFixed(1)}px)}80%,100%{transform:translate(${X(0)}px,${(+Z(6.8)+(6.8-zUp)*k).toFixed(1)}px)}}
+@keyframes pp_cb_${kind}{0%,6%{transform:translate(0,${Z(H0)}px) scaleY(${Lc(zUp)})}12%,18%{transform:translate(0,${Z(H0)}px) scaleY(${Lc(zS)})}26%,60%{transform:translate(0,${Z(H0)}px) scaleY(${Lc(zUp)})}66%,72%{transform:translate(0,${Z(H0)}px) scaleY(${Lc(zD)})}80%,100%{transform:translate(0,${Z(H0)}px) scaleY(${Lc(zUp)})}}
+@keyframes pp_hk_${kind}{0%,6%{transform:translate(${X(0)}px,${(+Z(H0)+(H0-zUp)*k).toFixed(1)}px)}12%,18%{transform:translate(${X(0)}px,${(+Z(H0)+(H0-zS)*k).toFixed(1)}px)}26%,60%{transform:translate(${X(0)}px,${(+Z(H0)+(H0-zUp)*k).toFixed(1)}px)}66%,72%{transform:translate(${X(0)}px,${(+Z(H0)+(H0-zD)*k).toFixed(1)}px)}80%,100%{transform:translate(${X(0)}px,${(+Z(H0)+(H0-zUp)*k).toFixed(1)}px)}}
 @keyframes pp_src{0%,16%{opacity:1}18%,97%{opacity:0}100%{opacity:1}}@keyframes pp_carry{0%,16%{opacity:0}18%,68%{opacity:1}70%,100%{opacity:0}}@keyframes pp_placed{0%,68%{opacity:0}70%,97%{opacity:1}100%{opacity:0}}
 @keyframes pp_c1{0%,28%{opacity:1}44%,100%{opacity:0}}@keyframes pp_c2{0%,28%{opacity:0}44%,100%{opacity:1}}
 .pcarro{animation:pp_tr_${kind} 12s ease-in-out infinite}.pcable{animation:pp_cb_${kind} 12s ease-in-out infinite}
@@ -794,80 +816,65 @@ function perfilShow(P,ri,k){const r=P.routes[ri],st=r.stops[k],p=P.puestos[st.p]
   const sc=pperfil.querySelector(".scene");sc.innerHTML="";sc.append(perfilScene(p.anim));pperfil.classList.add("on");}
 function addTour(P,sumRect){P.routes.forEach((r,ri)=>{r.stops.forEach((st,k)=>{add(st.rect,{ind:true,enter:()=>tourEnter(P,ri,k),leave:()=>clearTimeout(tourT)});if(P.puestos[st.p].anim)add(st.rect,{ind:true,enter:()=>perfilShow(P,ri,k)});});add(sumRect,{ind:true,enter:()=>tourFull(P,ri)});add(sumRect,{ind:true,enter:()=>tourSum(P,ri)});});}
 
-/* ---------- puente grúa animado (almacén de MP) — sobredibujo a escala sobre el plano rev 248 ----------
-   fuente de verdad: layout_carros.yaml (caminos del puente x −3,4 / 10,5 · semi x −4,6…9,0 · y 11,0…13,6 · pilas · cantilever · circuitos 27/28/30)
-   chapa de carros 1.500 × 3.000 (MP-11) · chapa de manuales 1.220 × 2.440 (MP-01) · rollo Ø ≈ 0,69 (pila) · caños de 6 m → cantilever 6,0 × 1,2 */
+/* ---------- puente grúa animado en planta (almacén de MP) — sobredibujo a escala sobre el plano rev 248 ----------
+   fuente de verdad: layout_carros.yaml (caminos x −3,4 / 10,5 · recorrido y −6,0 → 15,5 · semi x −4,6…9,0 · y 11,0…13,6 · pilas · cantilever · circuitos 27/28/30)
+   chapa de carros 1.500 × 3.000 (MP-11) · chapa de manuales 1.220 × 2.440 (MP-01) · rollo Ø 0,69 (pila) · caños de 6 m sobre los brazos del cantilever (cada 1,5 m) */
 function setupCrane(P){const k=P.pxm,X=P.mx,Y=P.my,svg=document.getElementById(P.svg);const g=sv("g",{id:"crane"},"crane");
-  const RX0=-3.4,RX1=10.5,YS=12.3;
-  const KINDS={
-    chapaC:{S:[0.3,YS],D:[-1.7,6.18]},      /* paquete 3,0 × 1,5 → pila MP-11 (x −3,2…−0,2 · y 5,43…6,93) */
-    chapaM:{S:[0.3,YS],D:[3.63,4.15]},      /* paquete 1,22 × 2,44 (vertical) → pila MP-01 (x 3,02…4,24 · y 2,93…5,37) */
-    bob:{S:[2.5,YS],D:[1.59,9.25]},         /* rollo → pila de ciclo */
-    canos:{S:[-0.6,YS],D:[-0.25,-3.01]}};   /* atado de 6 m → cantilever (x −3,4…2,9 · y −4,12…−1,9) */
-  /* --- defs: degradés y sombra --- */
-  const defs=sv("defs",{});const lg=(id,stops,x2="0",y2="1")=>{const e=sv("linearGradient",{id,x1:"0",y1:"0",x2,y2});stops.forEach(([o,c])=>e.append(sv("stop",{offset:o,"stop-color":c})));defs.append(e);};
-  lg("g_viga",[["0","#ffe27a"],["0.45","#f2c232"],["0.55","#e0ad1f"],["1","#9c7414"]]);lg("g_vigaH",[["0","#ffe27a"],["0.45","#f2c232"],["0.55","#e0ad1f"],["1","#9c7414"]],"1","0");
-  lg("g_acero",[["0","#dfe6ec"],["0.5","#aeb8c2"],["1","#7d8893"]],"1","0.3");lg("g_dark",[["0","#55606b"],["1","#1f262d"]]);lg("g_tubo",[["0","#9aa6b1"],["0.5","#e6ecf0"],["1","#6d7883"]]);
-  lg("g_mad",[["0","#c69a63"],["1","#8a6236"]]);lg("g_azul",[["0","#3d6fb6"],["1","#1b3f7a"]]);
+  const RX0=-3.4,RX1=10.5,YS=12.3,Y0=-6.0,Y1=15.5;
+  const KINDS={chapaC:{S:[0.3,YS],D:[-1.7,6.18]},chapaM:{S:[0.3,YS],D:[3.63,4.15]},bob:{S:[2.5,YS],D:[1.59,9.25]},canos:{S:[-0.6,YS],D:[-0.25,-2.9]}};
+  const defs=sv("defs",{});gradDefs(defs,"g_");
   const fs=sv("filter",{id:"f_sombra",x:"-30%",y:"-30%",width:"160%",height:"160%"});fs.append(sv("feDropShadow",{dx:(0.08*k).toFixed(1),dy:(0.12*k).toFixed(1),stdDeviation:(0.08*k).toFixed(1),"flood-color":"#000","flood-opacity":"0.45"}));defs.append(fs);
-  const fs2=sv("filter",{id:"f_sombra2",x:"-30%",y:"-30%",width:"160%",height:"160%"});fs2.append(sv("feDropShadow",{dx:(0.16*k).toFixed(1),dy:(0.26*k).toFixed(1),stdDeviation:(0.14*k).toFixed(1),"flood-color":"#000","flood-opacity":"0.5"}));defs.append(fs2);
-  svg.append(defs);
-  const R=(x,y,w,h,fill,extra)=>sv("rect",Object.assign({x:x*k,y:y*k,width:w*k,height:h*k,fill},extra||{}));
-  const sw=v=>(v*k).toFixed(2);
-  /* --- puente: viga cajón sobre los dos caminos, testeros con 2 ruedas, pasarela --- */
-  const bridge=sv("g",{},"bridge");bridge.setAttribute("filter","url(#f_sombra)");
-  const L=(RX1-RX0);bridge.append(sv("rect",{x:X(RX0),y:-0.32*k,width:L*k,height:0.64*k,fill:"url(#g_viga)",stroke:"#6b4f0e","stroke-width":sw(0.025)}));
-  bridge.append(sv("rect",{x:X(RX0),y:-0.05*k,width:L*k,height:0.1*k,fill:"#b58a1b",opacity:.5}));                               /* ala central */
-  bridge.append(sv("rect",{x:X(RX0)+0.9*k,y:0.34*k,width:(L-1.8)*k,height:0.28*k,fill:"#4b5563",stroke:"#1f262d","stroke-width":sw(0.02)})); /* pasarela */
-  for(let i=1;i<Math.floor((L-1.8)/0.6);i++)bridge.append(sv("rect",{x:X(RX0)+0.9*k+i*0.6*k,y:0.34*k,width:0.03*k,height:0.28*k,fill:"#202830",opacity:.6}));
-  [RX0,RX1].forEach(rx=>{bridge.append(sv("rect",{x:X(rx)-0.55*k,y:-0.55*k,width:1.1*k,height:1.1*k,rx:k*0.06,fill:"url(#g_dark)",stroke:"#0f1418","stroke-width":sw(0.025)}));
-    [-0.34,0.34].forEach(dy=>bridge.append(sv("rect",{x:X(rx)-0.18*k,y:(dy-0.12)*k,width:0.36*k,height:0.24*k,rx:k*0.04,fill:"#0f1418"})));});
-  /* --- carro + polipasto: bastidor, tambor de cable, motor, aparejo --- */
-  const trolley=sv("g",{},"trolley");
-  trolley.append(R(-0.7,-0.5,1.4,1.0,"url(#g_dark)",{rx:k*0.05,stroke:"#0f1418","stroke-width":sw(0.025)}));
-  trolley.append(R(-0.55,-0.22,0.8,0.44,"url(#g_acero)",{rx:k*0.22,stroke:"#55606b","stroke-width":sw(0.015)}));   /* tambor */
-  for(let i=0;i<9;i++)trolley.append(R(-0.52+i*0.085,-0.22,0.02,0.44,"#6d7883",{opacity:.55}));
-  trolley.append(sv("circle",{cx:0.45*k,cy:0,r:0.2*k,fill:"url(#g_azul)",stroke:"#0f1418","stroke-width":sw(0.02)}));          /* motor */
-  trolley.append(sv("circle",{cx:0.45*k,cy:0,r:0.07*k,fill:"#dfe6ec"}));
-  [[-0.62,-0.42],[0.62,-0.42],[-0.62,0.42],[0.62,0.42]].forEach(([x,y])=>trolley.append(sv("circle",{cx:x*k,cy:y*k,r:0.09*k,fill:"#0f1418"})));
-  const hook=sv("g",{},"hook");hook.append(sv("rect",{x:-0.16*k,y:-0.1*k,width:0.32*k,height:0.2*k,rx:k*0.03,fill:"#f2c232",stroke:"#6b4f0e","stroke-width":sw(0.015)}));hook.append(sv("circle",{cx:0,cy:0,r:0.06*k,fill:"#1f262d"}));
-  /* --- cargas --- */
-  function tacos(w,h,along){const q=sv("g",{});const n=3;if(along==="x"){[-1,0,1].forEach(i=>q.append(R(i*(w/2-0.15)-0.05,-h/2,0.1,h,"url(#g_mad)",{stroke:"#5a3d1c","stroke-width":sw(0.01)})));}
-    else{[-1,0,1].forEach(i=>q.append(R(-w/2,i*(h/2-0.15)-0.05,w,0.1,"url(#g_mad)",{stroke:"#5a3d1c","stroke-width":sw(0.01)})));}return q;}
-  function paquete(w,h){const q=sv("g",{});q.append(tacos(w,h,w>h?"x":"y"));q.append(R(-w/2,-h/2,w,h,"url(#g_acero)",{stroke:"#2c3e50","stroke-width":sw(0.03)}));
-    q.append(R(-w/2+0.04,-h/2+0.04,w-0.08,0.06,"#ffffff",{opacity:.55}));q.append(R(-w/2,h/2-0.08,w,0.08,"#000",{opacity:.18}));
-    const t=sv("text",{x:0,y:0.03*k,"text-anchor":"middle","font-size":(0.22*k).toFixed(1),"font-family":"Inter, Arial, sans-serif","font-weight":"600",fill:"#2c3e50",opacity:.7});t.textContent=`${Math.round(w*1000)} × ${Math.round(h*1000)}`;q.append(t);return q;}
-  function percha(vert){const q=sv("g",{});const rot=vert?"rotate(90)":"";const b=sv("g",{transform:rot});
-    [-1,0,1].forEach(dx=>{b.append(R(dx-0.05,-0.95,0.1,1.9,"url(#g_azul)",{stroke:"#0f1418","stroke-width":sw(0.012)}));
-      [-0.95,0.95].forEach(dy=>{b.append(sv("circle",{cx:dx*k,cy:dy*k,r:0.09*k,fill:"#f2c232",stroke:"#6b4f0e","stroke-width":sw(0.015)}));b.append(sv("line",{x1:dx*k,y1:dy*k,x2:dx*k,y2:(dy>0?0.72:-0.72)*k,stroke:"#1f262d","stroke-width":sw(0.03),"stroke-dasharray":`${sw(0.05)} ${sw(0.04)}`}));});});
-    b.append(R(-1.3,-0.1,2.6,0.2,"url(#g_viga)",{stroke:"#6b4f0e","stroke-width":sw(0.015)}));b.append(R(-1.3,-0.02,2.6,0.04,"#9c7414",{opacity:.6}));
-    b.append(sv("circle",{cx:0,cy:0,r:0.12*k,fill:"#1f262d"}));q.append(b);return q;}
-  function rolloLado(){const q=sv("g",{});q.append(R(-0.687,-0.16,1.374,0.32,"url(#g_acero)",{rx:k*0.06,stroke:"#2c3e50","stroke-width":sw(0.025)}));q.append(R(-0.254,-0.16,0.508,0.32,"#eef2f5",{stroke:"#2c3e50","stroke-width":sw(0.012)}));
-    for(let i=0;i<10;i++)q.append(R(-0.66+i*0.135,-0.16,0.012,0.32,"#55606b",{opacity:.5}));return q;}
-  function rolloTop(){const q=sv("g",{});const rg=sv("radialGradient",{id:"g_rollo",cx:"0.4",cy:"0.35",r:"0.7"});[["0","#f1f4f6"],["0.45","#b8c1c9"],["1","#6b7680"]].forEach(([o,c])=>rg.append(sv("stop",{offset:o,"stop-color":c})));defs.append(rg);
-    q.append(sv("circle",{cx:0,cy:0,r:0.687*k,fill:"url(#g_rollo)",stroke:"#2c3e50","stroke-width":sw(0.03)}));for(let r=0.3;r<0.68;r+=0.05)q.append(sv("circle",{cx:0,cy:0,r:r*k,fill:"none",stroke:"#55606b","stroke-width":sw(0.008),opacity:.6}));
-    q.append(sv("circle",{cx:0,cy:0,r:0.254*k,fill:"#f6f7f8",stroke:"#2c3e50","stroke-width":sw(0.02)}));return q;}
-  function ganchoC(){const q=sv("g",{});/* gancho C basculante TCS: espalda + brazo que entra por el ojo; visto de arriba */
-    q.append(sv("path",{d:`M ${sw(-0.95)} ${sw(-0.14)} L ${sw(-0.95)} ${sw(0.14)} L ${sw(-0.55)} ${sw(0.14)} L ${sw(-0.55)} ${sw(0.08)} L ${sw(0.75)} ${sw(0.08)} L ${sw(0.75)} ${sw(-0.08)} L ${sw(-0.55)} ${sw(-0.08)} L ${sw(-0.55)} ${sw(-0.14)} Z`,fill:"url(#g_azul)",stroke:"#0f1418","stroke-width":sw(0.02),"stroke-linejoin":"round"}));
-    q.append(sv("rect",{x:sw(-1.05),y:sw(-0.36),width:sw(0.2),height:sw(0.72),rx:sw(0.04),fill:"#1f3b80",stroke:"#0f1418","stroke-width":sw(0.02)}));
-    q.append(sv("circle",{cx:sw(-0.95),cy:0,r:sw(0.1),fill:"#f2c232",stroke:"#6b4f0e","stroke-width":sw(0.015)}));return q;}
-  function atado(){const q=sv("g",{});[-0.2,-0.1,0,0.1,0.2].forEach(dy=>q.append(R(-3.0,dy-0.045,6.0,0.09,"url(#g_tubo)",{rx:k*0.045,stroke:"#4b5563","stroke-width":sw(0.008)})));
-    [-1.5,1.5].forEach(dx=>q.append(R(dx-0.05,-0.27,0.1,0.54,"#1f262d",{opacity:.85})));return q;}
-  function balancin(){const q=sv("g",{});q.append(R(-1.5,-0.11,3.0,0.22,"url(#g_viga)",{rx:k*0.03,stroke:"#6b4f0e","stroke-width":sw(0.015)}));q.append(R(-1.5,-0.02,3.0,0.04,"#9c7414",{opacity:.6}));
-    [-0.9,0.9].forEach(dx=>{q.append(sv("circle",{cx:dx*k,cy:0,r:0.1*k,fill:"#1f262d"}));[-1.5,1.5].forEach(sx=>{});
-      const tx=dx>0?1.5:-1.5;q.append(sv("line",{x1:dx*k,y1:0,x2:tx*k,y2:-0.22*k,stroke:"#2b2b2b","stroke-width":sw(0.035)}));q.append(sv("line",{x1:dx*k,y1:0,x2:tx*k,y2:0.22*k,stroke:"#2b2b2b","stroke-width":sw(0.035)}));});
-    q.append(sv("circle",{cx:0,cy:0,r:0.12*k,fill:"#1f262d"}));return q;}
-  const parts={chapaC:{src:()=>paquete(3.0,1.5),carry:[()=>paquete(3.0,1.5),()=>percha(false)],placed:()=>paquete(3.0,1.5)},
-    chapaM:{src:()=>paquete(1.22,2.44),carry:[()=>paquete(1.22,2.44),()=>percha(true)],placed:()=>paquete(1.22,2.44)},
+  const fs2=sv("filter",{id:"f_sombra2",x:"-30%",y:"-30%",width:"160%",height:"160%"});fs2.append(sv("feDropShadow",{dx:(0.16*k).toFixed(1),dy:(0.26*k).toFixed(1),stdDeviation:(0.14*k).toFixed(1),"flood-color":"#000","flood-opacity":"0.5"}));defs.append(fs2);svg.append(defs);
+  const R=(x,y,w,h,fill,extra)=>sv("rect",Object.assign({x:x*k,y:y*k,width:w*k,height:h*k,fill},extra||{}));const sw=v=>(v*k).toFixed(2);
+  /* camino de rodadura (fijo): viga carrilera IPE330 sobre columnas cada 6 m con zapata 1,1 × 1,1 */
+  const rail=sv("g",{},"rail");[RX0,RX1].forEach(rx=>{rail.append(sv("rect",{x:X(rx)-0.08*k,y:Y(Y0),width:0.16*k,height:(Y1-Y0)*k,fill:"url(#g_acero)",stroke:"#2c3e50","stroke-width":sw(0.015),opacity:.95}));
+    for(let y=Y0;y<=Y1+0.01;y+=6){const yy=Math.min(y,Y1);rail.append(sv("rect",{x:X(rx)-0.55*k,y:Y(yy)-0.55*k,width:1.1*k,height:1.1*k,fill:"#cfcbc1",stroke:"#8f8c84","stroke-width":sw(0.012),opacity:.9}));
+      rail.append(sv("rect",{x:X(rx)-0.17*k,y:Y(yy)-0.17*k,width:0.34*k,height:0.34*k,fill:"url(#g_dark)",stroke:"#0f1418","stroke-width":sw(0.015)}));[[-0.4,-0.4],[0.4,-0.4],[-0.4,0.4],[0.4,0.4]].forEach(([a,b])=>rail.append(sv("circle",{cx:X(rx)+a*k,cy:Y(yy)+b*k,r:0.05*k,fill:"#4b5563"})));}});
+  g.append(rail);
+  /* puente monoviga: viga cajón + testeros de 1,5 m con 2 ruedas, se mueve en y */
+  const bridge=sv("g",{},"bridge");bridge.setAttribute("filter","url(#f_sombra)");const L=RX1-RX0;
+  bridge.append(sv("rect",{x:X(RX0)+0.2*k,y:-0.28*k,width:(L-0.4)*k,height:0.56*k,fill:"url(#g_amar)",stroke:"#6b4f0e","stroke-width":sw(0.025)}));bridge.append(sv("rect",{x:X(RX0)+0.2*k,y:-0.03*k,width:(L-0.4)*k,height:0.06*k,fill:"#9c7414",opacity:.55}));
+  [RX0,RX1].forEach(rx=>{bridge.append(sv("rect",{x:X(rx)-0.22*k,y:-0.75*k,width:0.44*k,height:1.5*k,rx:k*0.05,fill:"url(#g_amarH)",stroke:"#6b4f0e","stroke-width":sw(0.02)}));
+    [-0.55,0.55].forEach(dy=>{bridge.append(sv("rect",{x:X(rx)-0.14*k,y:(dy-0.16)*k,width:0.28*k,height:0.32*k,rx:k*0.03,fill:"url(#g_dark)",stroke:"#0f1418","stroke-width":sw(0.015)}));bridge.append(sv("circle",{cx:X(rx),cy:dy*k,r:0.06*k,fill:"#8d99a4"}));});
+    bridge.append(sv("rect",{x:X(rx)-0.3*k,y:-0.12*k,width:0.6*k,height:0.24*k,rx:k*0.03,fill:"url(#g_azul)",stroke:"#1b3f7a","stroke-width":sw(0.015)}));});   /* motor de traslación */
+  /* carro con polipasto eléctrico (colgado del ala inferior): bastidor, tambor, motor azul, gancho */
+  const trolley=sv("g",{},"trolley");trolley.append(R(-0.62,-0.42,1.24,0.84,"url(#g_azul)",{rx:k*0.06,stroke:"#1b3f7a","stroke-width":sw(0.025)}));
+  trolley.append(R(-0.5,-0.2,0.72,0.4,"url(#g_acero)",{rx:k*0.2,stroke:"#55606b","stroke-width":sw(0.015)}));for(let i=0;i<8;i++)trolley.append(R(-0.47+i*0.085,-0.2,0.02,0.4,"#6d7883",{opacity:.55}));
+  trolley.append(sv("circle",{cx:0.4*k,cy:0,r:0.17*k,fill:"#1b3f7a",stroke:"#0f1418","stroke-width":sw(0.02)}));trolley.append(sv("circle",{cx:0.4*k,cy:0,r:0.06*k,fill:"#dfe6ec"}));
+  [[-0.55,-0.36],[0.55,-0.36],[-0.55,0.36],[0.55,0.36]].forEach(([x,y])=>trolley.append(sv("circle",{cx:x*k,cy:y*k,r:0.07*k,fill:"#f2c232",stroke:"#6b4f0e","stroke-width":sw(0.012)})));
+  const hook=sv("g",{},"hook");hook.append(sv("rect",{x:-0.14*k,y:-0.09*k,width:0.28*k,height:0.18*k,rx:k*0.03,fill:"url(#g_amar)",stroke:"#6b4f0e","stroke-width":sw(0.015)}));hook.append(sv("circle",{cx:0,cy:0,r:0.05*k,fill:"#1f262d"}));
+  /* cargas */
+  function tacos(w,h){const q=sv("g",{});if(w>h)[-1,0,1].forEach(i=>q.append(R(i*(w/2-0.2)-0.05,-h/2-0.04,0.1,h+0.08,"url(#g_mad)",{stroke:"#5a3d1c","stroke-width":sw(0.01)})));else[-1,0,1].forEach(i=>q.append(R(-w/2-0.04,i*(h/2-0.2)-0.05,w+0.08,0.1,"url(#g_mad)",{stroke:"#5a3d1c","stroke-width":sw(0.01)})));return q;}
+  function paquete(w,h,strap){const q=sv("g",{});q.append(tacos(w,h));q.append(R(-w/2,-h/2,w,h,"url(#g_acero)",{stroke:"#2c3e50","stroke-width":sw(0.03)}));q.append(R(-w/2+0.04,-h/2+0.04,w-0.08,0.06,"#ffffff",{opacity:.55}));q.append(R(-w/2,h/2-0.08,w,0.08,"#000",{opacity:.18}));
+    if(strap){if(w>h)[-1,0,1].forEach(i=>q.append(R(i*(w/2-0.2)-0.02,-h/2-0.05,0.04,h+0.1,CP.nar)));else[-1,0,1].forEach(i=>q.append(R(-w/2-0.05,i*(h/2-0.2)-0.02,w+0.1,0.04,CP.nar)));}
+    const t=sv("text",{x:0,y:0.03*k,"text-anchor":"middle","font-size":(0.2*k).toFixed(1),"font-family":"Inter, Arial, sans-serif","font-weight":"600",fill:"#2c3e50",opacity:.65});t.textContent=`${Math.round(w*1000)} × ${Math.round(h*1000)}`;q.append(t);return q;}
+  function percha(vert,w,h){const q=sv("g",{});const b=sv("g",{transform:vert?"rotate(90)":""});const half=vert?w/2:h/2;   /* barra verde 2,6 + 3 brazos de 1,9 con cadenas al borde del paquete */
+    [-1,0,1].forEach(dx=>{b.append(R(dx-0.09,-0.95,0.18,1.9,"url(#g_verde)",{stroke:"#0f4a30","stroke-width":sw(0.012),rx:k*0.02}));
+      [-0.95,0.95].forEach(dy=>{b.append(R(dx-0.12,dy>0?0.75:-0.95,0.24,0.2,"#8d99a4",{stroke:"#2c3e50","stroke-width":sw(0.01)}));b.append(sv("line",{x1:dx*k,y1:dy*k,x2:dx*k,y2:(dy>0?half:-half)*k,stroke:"#2b2b2b","stroke-width":sw(0.035),"stroke-dasharray":`${sw(0.05)} ${sw(0.04)}`}));b.append(sv("circle",{cx:dx*k,cy:(dy>0?half:-half)*k,r:0.06*k,fill:"#f2c232",stroke:"#6b4f0e","stroke-width":sw(0.012)}));});});
+    b.append(R(-1.3,-0.1,2.6,0.2,"url(#g_verde)",{stroke:"#0f4a30","stroke-width":sw(0.015)}));b.append(R(-1.3,-0.03,2.6,0.05,"#5fd3a0",{opacity:.5}));b.append(sv("circle",{cx:0,cy:0,r:0.12*k,fill:"#c0392b",stroke:"#6b1d14","stroke-width":sw(0.015)}));q.append(b);return q;}
+  function cunaT(){const q=sv("g",{});[-0.45,0.45].forEach(dx=>q.append(R(dx-0.12,-0.75,0.24,1.5,"url(#g_mad)",{stroke:"#5a3d1c","stroke-width":sw(0.01)})));return q;}
+  function rolloLado(){const q=sv("g",{});q.append(cunaT());q.append(R(-0.687,-0.16,1.374,0.32,"url(#g_acero)",{rx:k*0.06,stroke:"#2c3e50","stroke-width":sw(0.025)}));q.append(R(-0.254,-0.16,0.508,0.32,"#eef2f5",{stroke:"#2c3e50","stroke-width":sw(0.012)}));for(let i=0;i<10;i++)q.append(R(-0.66+i*0.135,-0.16,0.012,0.32,"#55606b",{opacity:.5}));q.append(R(-0.03,-0.8,0.06,1.6,CP.nar,{opacity:.9}));return q;}
+  function rolloTop(){const q=sv("g",{});q.append(sv("circle",{cx:0,cy:0,r:0.687*k,fill:"url(#g_rollo)",stroke:"#2c3e50","stroke-width":sw(0.03)}));for(let r=0.3;r<0.68;r+=0.05)q.append(sv("circle",{cx:0,cy:0,r:r*k,fill:"none",stroke:"#55606b","stroke-width":sw(0.008),opacity:.6}));q.append(sv("circle",{cx:0,cy:0,r:0.254*k,fill:"#f6f7f8",stroke:"#2c3e50","stroke-width":sw(0.02)}));return q;}
+  function ganchoC(){const q=sv("g",{});/* gancho C basculante amarillo: brazo por el ojo + espalda + cabeza con grillete, visto de arriba */
+    q.append(sv("path",{d:`M ${sw(0.75)} ${sw(-0.09)} L ${sw(-0.95)} ${sw(-0.09)} L ${sw(-0.95)} ${sw(-0.2)} L ${sw(-1.45)} ${sw(-0.2)} L ${sw(-1.45)} ${sw(0.2)} L ${sw(-0.95)} ${sw(0.2)} L ${sw(-0.95)} ${sw(0.09)} L ${sw(0.75)} ${sw(0.09)} Z`,fill:"url(#g_amarH)",stroke:"#6b4f0e","stroke-width":sw(0.02),"stroke-linejoin":"round"}));
+    q.append(sv("rect",{x:sw(-1.75),y:sw(-0.26),width:sw(0.32),height:sw(0.52),rx:sw(0.05),fill:"url(#g_dark)",stroke:"#0f1418","stroke-width":sw(0.015)}));q.append(sv("circle",{cx:sw(-1.6),cy:0,r:sw(0.1),fill:"none",stroke:"#2b2b2b","stroke-width":sw(0.05)}));return q;}
+  function atado(){const q=sv("g",{});[-0.2,-0.1,0,0.1,0.2].forEach(dy=>q.append(R(-3.0,dy-0.045,6.0,0.09,"url(#g_tubo)",{rx:k*0.045,stroke:"#4b5563","stroke-width":sw(0.008)})));[-2.2,2.2].forEach(dx=>q.append(R(dx-0.03,-0.3,0.06,0.6,CP.nar)));return q;}
+  function balancin(){const q=sv("g",{});q.append(R(-1.5,-0.11,3.0,0.22,"url(#g_amar)",{rx:k*0.03,stroke:"#6b4f0e","stroke-width":sw(0.015)}));q.append(R(-1.5,-0.02,3.0,0.04,"#9c7414",{opacity:.6}));
+    [-0.9,0.9].forEach(dx=>{const tx=dx>0?2.2:-2.2;q.append(sv("circle",{cx:dx*k,cy:0,r:0.09*k,fill:"#1f262d"}));[-0.25,0.25].forEach(dy=>q.append(sv("line",{x1:dx*k,y1:0,x2:tx*k,y2:dy*k,stroke:"#2b2b2b","stroke-width":sw(0.035)})));});q.append(sv("circle",{cx:0,cy:0,r:0.11*k,fill:"#1f262d"}));return q;}
+  function brazosCant(){const q=sv("g",{});/* brazos del cantilever (1,0 m, cada 1,5 m) por donde se apoyan los caños: sobredibujo para que se vea el apoyo */
+    [-2.5,-1.0,0.5,2.0].forEach(x=>q.append(sv("rect",{x:(X(x)-0.06*k).toFixed(1),y:Y(-3.4),width:0.12*k,height:1.0*k,fill:"url(#g_dark)",stroke:"#0f1418","stroke-width":sw(0.012)})));return q;}
+  const parts={chapaC:{src:()=>paquete(3.0,1.5,true),carry:[()=>paquete(3.0,1.5,true),()=>percha(false,3.0,1.5)],placed:()=>paquete(3.0,1.5,false)},
+    chapaM:{src:()=>paquete(1.22,2.44,true),carry:[()=>paquete(1.22,2.44,true),()=>percha(true,1.22,2.44)],placed:()=>paquete(1.22,2.44,false)},
     bob:{src:rolloLado,carry:[rolloLado,ganchoC],carry2:[rolloTop,ganchoC],placed:rolloTop},
-    canos:{src:atado,carry:[atado,balancin],placed:atado}};
+    canos:{src:atado,carry:[atado,balancin],placed:atado,fixed:brazosCant}};
   let css="";
   Object.entries(KINDS).forEach(([kind,K])=>{const S=K.S,D=K.D;const pr=parts[kind];const kg=sv("g",{"data-k":kind},"kind");
+    if(pr.fixed)kg.append(pr.fixed());
     const src=pr.src();src.setAttribute("class","src");src.setAttribute("transform",`translate(${X(S[0])} ${Y(S[1])})`);src.setAttribute("filter","url(#f_sombra)");kg.append(src);
     const placed=pr.placed();placed.setAttribute("class","placed");placed.setAttribute("transform",`translate(${X(D[0])} ${Y(D[1])})`);placed.setAttribute("filter","url(#f_sombra)");kg.append(placed);
     const carry=sv("g",{},"carry");pr.carry.forEach(f=>carry.append(f()));if(pr.carry2){const c2=sv("g",{},"carry2");pr.carry2.forEach(f=>c2.append(f()));carry.append(c2);carry.firstChild.setAttribute("class","carry1");}
     kg.append(carry);kg.carry=carry;g.append(kg);K.el=kg;
-    const YR=Y(9.62).toFixed(1); /* reposo del puente (LOTO) */
+    const YR=Y(9.62).toFixed(1);
     css+=`@keyframes br_${kind}{0%{transform:translate(0,${YR}px)}10%,24%{transform:translate(0,${Y(S[1]).toFixed(1)}px)}60%,72%{transform:translate(0,${Y(D[1]).toFixed(1)}px)}92%,100%{transform:translate(0,${YR}px)}}
 @keyframes tr_${kind}{0%,24%{transform:translate(${X(S[0]).toFixed(1)}px,0)}60%,72%{transform:translate(${X(D[0]).toFixed(1)}px,0)}92%,100%{transform:translate(${X(S[0]).toFixed(1)}px,0)}}
 #crane[data-kind="${kind}"] .bridge{animation:br_${kind} 12s ease-in-out infinite}#crane[data-kind="${kind}"] .trolley{animation:tr_${kind} 12s ease-in-out infinite}`;});
@@ -876,7 +883,6 @@ function setupCrane(P){const k=P.pxm,X=P.mx,Y=P.my,svg=document.getElementById(P
 @keyframes cr_carry{0%,14%{opacity:0;transform:scale(.96)}18%{opacity:1;transform:scale(1)}26%,60%{opacity:1;transform:scale(1.06)}68%{opacity:1;transform:scale(1)}72%,100%{opacity:0;transform:scale(1)}}
 @keyframes cr_placed{0%,68%{opacity:0}72%,97%{opacity:1}100%{opacity:0}}
 @keyframes cr_c1{0%,28%{opacity:1}44%,100%{opacity:0}}@keyframes cr_c2{0%,28%{opacity:0}44%,100%{opacity:1}}
-@keyframes cr_hook{0%,8%{transform:scale(.7)}12%,100%{transform:scale(1)}}
 #crane.play .kind.on .src{animation:cr_src 12s linear infinite}#crane.play .kind.on .placed{animation:cr_placed 12s linear infinite}
 #crane.play .carry{animation:cr_carry 12s ease-in-out infinite;transform-box:fill-box;transform-origin:center;filter:url(#f_sombra2)}
 #crane.play .carry1{animation:cr_c1 12s linear infinite}#crane.play .carry2{animation:cr_c2 12s linear infinite}
