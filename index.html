@@ -159,6 +159,13 @@ svg.explore .part:not(.sel){opacity:.35}
 .aibg::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(232,41,28,.18),transparent 25%,transparent 75%,rgba(232,41,28,.18))}
 .aibg>*{position:relative;z-index:1}
 .pp-title{font-size:88px;margin:0 0 30px}
+.rse-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-bottom:34px}
+.rse-stats .pp-stat .v{font-size:120px}
+.rse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.rse-grid .chart{padding:22px 26px}
+.rse-grid h2{font-size:28px;margin-bottom:10px;color:var(--red2)}
+.rse-list{margin:0;padding-left:22px;font-size:21px;line-height:1.4;color:#e4e4e6}
+.rse-list li{margin-bottom:8px}
 .mx-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
 .mx-grid .chart{padding:18px 22px}
 .mx-grid h2{font-size:26px;margin-bottom:6px}
@@ -277,6 +284,33 @@ svg.explore .part:not(.sel){opacity:.35}
 
 <!-- 6 PLANO -->
 <section class="frame catimg" id="f-plano" data-x="120" data-y="5740"><div class="catbox planbox" id="planimg"><img src="img/plano_cad.png?v=69f115de" alt="Plano de la planta comercial de recargas, rev 24"><div class="dim" id="dim"></div></div></section>
+
+<section class="frame aibg" id="f-rse" data-x="4360" data-y="4320">
+  <h1 class="pp-title">RSE y tratamiento de efluentes</h1>
+  <div class="rse-stats">
+    <div class="pp-stat"><div class="v">85<span>%</span></div><div class="l">del polvo ABC se recupera<br><em>solo se repone el 14,9 % de cada carga</em></div></div>
+    <div class="pp-stat"><div class="v">0</div><div class="l">vuelco de efluentes de pintura<br><em>recirculación y filtrado en circuito cerrado</em></div></div>
+    <div class="pp-stat"><div class="v">81<span>t</span></div><div class="l">de chatarra valorizada por año<br><em>recipientes inutilizados → chatarrera habilitada</em></div></div>
+  </div>
+  <div class="rse-grid">
+    <div class="chart"><h2>Efluentes líquidos</h2><ul class="rse-list">
+      <li>Pintura: recirculación + filtrado, sin vuelco a cloaca.</li>
+      <li>Limpieza y fosfatizado: floculación y vuelco a red con pH 6–9.</li>
+      <li>Ensayo hidráulico: agua en circuito cerrado; en recargas va a cámara decantadora.</li>
+      <li>AFFF y clase K con enjuague: IBC de 1.000 L a operador habilitado.</li></ul></div>
+    <div class="chart"><h2>Residuos especiales · Ley 11.720 PBA</h2><ul class="rse-list">
+      <li>Polvo ABC de descarte en big bags: retiro semanal por operador habilitado.</li>
+      <li>Y12 polvo de pintura · Y17 lodo de granallado · Y8/Y9 aceites · Y48 sólidos impregnados.</li>
+      <li>HCFC contaminado en cilindro propio, nunca venteado.</li>
+      <li>Un solo retiro semanal para residuos y scrap: contenedor de 2,5 m³.</li></ul></div>
+    <div class="chart"><h2>Compromiso</h2><ul class="rse-list">
+      <li>Sustituto en préstamo: el cliente nunca queda sin protección contra incendios.</li>
+      <li>Trazabilidad por n° de serie y certificación IRAM en cada equipo.</li>
+      <li>Zona ATEX 22 con ventilación forzada; EPP por sector (Ley 19.587 · Dec. 351/79).</li>
+      <li>Gases con proveedor certificado y reciclado de N₂ y CO₂ en cilindros retornables.</li></ul></div>
+  </div>
+  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026</div>
+</section>
 
 <!-- 7 CIERRE -->
 <section class="frame cover2 fin" id="f-fin" data-x="3640" data-y="6080">
@@ -581,7 +615,7 @@ const plano=F("f-plano");const PLAN_IMG={w:3700,h:4530};
 GRUPOS.forEach((g,i)=>{const b=imgBox(document.getElementById("f-plano"),PLAN_IMG);const bb=g.bbox;const x=bb[0]/100*PLAN_IMG.w,y=bb[1]/100*PLAN_IMG.h,w=bb[2]/100*PLAN_IMG.w,h=bb[3]/100*PLAN_IMG.h;
   const pad=g.key==="todo"?0:.08;const rect={x:b.x+(x-w*pad)*b.s,y:b.y+(y-h*pad)*b.s,w:w*(1+2*pad)*b.s,h:h*(1+2*pad)*b.s};
   add(g.key==="todo"?plano:rect,{enter:()=>setZone(g.key==="todo"?null:g.key)});});
-add(F("f-fin"));
+add(F("f-rse"));add(F("f-fin"));
 add(F("f-c2"),{cap:"<b>ABC 10 kg · catálogo</b>Conjuntos y componentes del matafuego portátil de 10 kg con manguera; rotulado e identificación (etiqueta, oblea DPS/PBA, estampilla IRAM, serie GS1, tarjeta AGC y marbete)."});
 [
  {r:[565,245,260,495],cap:"<b>Zoom 1 · Recipiente + caño de pesca</b>01 cuerpo (virola) · 02 cúpula en chapa LAF 1,6 mm · 03 fondo 2,0 mm · 04 cuello roscado M30 × 1,5 · 15 caño de pesca de PVC rígido. Recipiente de 12,5 L, 5,43 kg, 1 costura longitudinal + 2 transversales MAG, ensayo hidráulico 3,5 MPa."},
