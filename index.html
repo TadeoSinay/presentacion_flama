@@ -507,17 +507,15 @@ function bars(id,series,colors,opt){const svg=document.getElementById(id);const 
   YEARS.forEach((yr,i)=>{let base=0;const x=L+step*i+(step-bw)/2;series.forEach((s,k)=>{const h=sc(0)-sc(s[i]);svg.append(S("rect",{x,y:sc(base+s[i]),width:bw,height:h,fill:colors[k]}));base+=s[i];});
     svg.append(S("text",{x:x+bw/2,y:sc(base)-6,'text-anchor':"middle",fill:"#ececea",'font-size':13,'font-family':"Inter Tight, Inter, sans-serif",'font-weight':600},fmt(base)));
     svg.append(S("text",{x:x+bw/2,y:H-B+22,'text-anchor':"middle",fill:"#9b9b9f",'font-size':15,'font-family':"Inter, sans-serif"},yr));});}
-(function(){const svg=document.getElementById("ch-total");if(!svg)return;const TOT=YEARS.map((_,i)=>NUEVOS[i]+CIL[i]+REC[i]);const W=1180,H=600,L=40,R=230,T=70,B=60;const max=700000;
+(function(){const svg=document.getElementById("ch-total");if(!svg)return;const IND=YEARS.map((_,i)=>NUEVOS[i]+CIL[i]);const COM=REC;const W=1180,H=600,L=40,R=60,T=90,B=95;const max=420000;
   const sx=i=>L+(W-L-R)*i/9,sy=v=>(H-B)-(v/max)*(H-B-T);
-  for(let v=0;v<=max;v+=175000)svg.append(S("line",{x1:L,x2:W-R,y1:sy(v),y2:sy(v),stroke:"rgba(255,255,255,.08)"}));
-  YEARS.forEach((y,i)=>svg.append(S("text",{x:sx(i),y:H-B+34,'text-anchor':"middle",fill:"#9b9b9f",'font-size':22,'font-family':"Inter, sans-serif"},y)));
-  const id="gl"+Math.random().toString(36).slice(2,7);svg.append(S("defs",{},[S("linearGradient",{id,x1:0,y1:0,x2:0,y2:1},[S("stop",{offset:"0",'stop-color':"#e8341c",'stop-opacity':.45}),S("stop",{offset:"1",'stop-color':"#e8341c",'stop-opacity':0})])]));
-  const pts=TOT.map((v,i)=>[sx(i),sy(v)]);const d=pts.map((p,i)=>(i?"L":"M")+p[0]+" "+p[1]).join(" ");
-  svg.append(S("path",{d:d+` L${sx(9)} ${sy(0)} L${sx(0)} ${sy(0)} Z`,fill:`url(#${id})`}));
-  svg.append(S("path",{d,fill:"none",stroke:"#ff4a2b",'stroke-width':6,'stroke-linejoin':"round",'stroke-linecap':"round"}));
-  pts.forEach((p,i)=>svg.append(S("circle",{cx:p[0],cy:p[1],r:i===9||i===0?9:5,fill:i===9||i===0?"#fff":"#ff4a2b"})));
-  svg.append(S("text",{x:sx(9)+18,y:sy(TOT[9])+12,fill:"#fff",'font-size':40,'font-weight':700,'font-family':"Inter Tight, Inter, sans-serif",'letter-spacing':-1},fmt(TOT[9])));
-  svg.append(S("text",{x:sx(0)+16,y:sy(TOT[0])-18,fill:"#fff",'font-size':30,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},fmt(TOT[0])));})();
+  for(let v=0;v<=max;v+=100000)svg.append(S("line",{x1:L,x2:W-R,y1:sy(v),y2:sy(v),stroke:"rgba(255,255,255,.08)"}));
+  YEARS.forEach((y,i)=>svg.append(S("text",{x:sx(i),y:H-B+70,'text-anchor':"middle",fill:"#9b9b9f",'font-size':22,'font-family':"Inter, sans-serif"},y)));
+  const series=[[COM,"#ff4a2b","Planta comercial · recargas",-16],[IND,"#ffffff","Planta industrial · matafuegos y cilindros nuevos",30]];
+  series.forEach(([D,c,name,dy],k)=>{const pts=D.map((v,i)=>[sx(i),sy(v)]);const d=pts.map((p,i)=>(i?"L":"M")+p[0]+" "+p[1]).join(" ");
+    svg.append(S("path",{d,fill:"none",stroke:c,'stroke-width':5,'stroke-linejoin':"round",'stroke-linecap':"round"}));
+    pts.forEach((p,i)=>{svg.append(S("circle",{cx:p[0],cy:p[1],r:6,fill:c}));svg.append(S("text",{x:p[0],y:p[1]+dy,'text-anchor':"middle",fill:c,'font-size':19,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},fmt(D[i])));});
+    svg.append(S("g",{transform:`translate(${L+k*480},${28})`},[S("rect",{x:0,y:-8,width:34,height:6,rx:3,fill:c}),S("text",{x:44,y:0,fill:"#ececea",'font-size':22,'font-family':"Inter, sans-serif"},name)]));});})();
 function hbars(id,data,color){const svg=document.getElementById(id);const W=860,L=210,R=110;const max=data[0][1];const rh=52,gap=18;
   data.forEach((d,i)=>{const y=20+i*(rh+gap);const w=(W-L-R)*d[1]/max;const pct=(d[1]/data.reduce((a,x)=>a+x[1],0)*100).toFixed(1).replace(".",",");
     svg.append(S("text",{x:L-14,y:y+rh/2+7,'text-anchor':"end",fill:"#ececea",'font-size':22,'font-family':"Inter Tight, Inter, sans-serif",'font-weight':600},d[0]),S("rect",{x:L,y,width:Math.max(w,3),height:rh,fill:color,opacity:1-i*.14}),S("text",{x:L+Math.max(w,3)+10,y:y+rh/2+7,fill:"#ececea",'font-size':19,'font-family':"Inter, sans-serif"},`${fmt(d[1])} · ${pct} %`));});}
