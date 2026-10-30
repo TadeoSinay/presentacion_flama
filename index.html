@@ -154,6 +154,18 @@ svg.explore .part:not(.sel){opacity:.35}
 .hsb:hover,.hsb:focus-visible{border-color:#ff6a2b99;outline:none}
 .hsb.sel{border-color:#ff6a2b;box-shadow:0 0 0 3px #ff6a2b33,0 0 18px #ff6a2b}
 .capx{display:block;margin-top:6px;color:var(--muted);font-size:.85em}
+.aibg{background:#070708 radial-gradient(900px 600px at 100% 100%,rgba(232,41,28,.55),transparent 60%),radial-gradient(700px 500px at 0% 0%,rgba(232,41,28,.22),transparent 60%)}
+.aibg::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,transparent 0 46px,rgba(232,41,28,.09) 46px 48px),radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1.5px);background-size:auto,34px 34px}
+.aibg::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(232,41,28,.18),transparent 25%,transparent 75%,rgba(232,41,28,.18))}
+.aibg>*{position:relative;z-index:1}
+.pp-title{font-size:88px;margin:0 0 30px}
+.pp-grid{display:grid;grid-template-columns:420px 1fr;gap:60px;align-items:center}
+.pp-stats{display:grid;gap:40px}
+.pp-stat .v{font-family:var(--display);font-weight:700;font-size:150px;letter-spacing:-.05em;line-height:.95;color:#fff;font-variant-numeric:tabular-nums}
+.pp-stat .v span{font-size:70px;color:var(--red2);margin-left:6px;letter-spacing:0}
+.pp-stat .l{font-size:28px;margin-top:10px;color:#fff}
+.pp-stat .l em{font-style:normal;color:var(--muted);font-size:22px}
+.aibg .foot{color:var(--muted)}
 /* charts */
 .chart{background:#1c1c1f;border-radius:24px;padding:24px 26px}
 .chart h2{font-size:30px}
@@ -225,24 +237,19 @@ svg.explore .part:not(.sel){opacity:.35}
 
 <section class="frame catimg" id="f-c3" data-x="6480" data-y="1480"><div class="catbox c2" id="catbox3"><img src="img/cat_100kg.png" alt="Catálogo Flama · ABC 100 kg rodante: conjuntos, componentes y rotulado"><div class="hsl" id="hsl3"></div></div></section>
 
-<section class="frame" id="f-plan" data-x="120" data-y="2900">
-  <div class="num">03</div>
-  <div class="eyebrow">Plan de producción 2026–2035</div>
-  <h1>Producción = demanda proyectada</h1>
-  <div class="tiles">
-    <div class="tile"><div class="v">287.332</div><div class="l">unidades nuevas en 10 años (matafuegos + cilindros)</div></div>
-    <div class="tile"><div class="v">73.902</div><div class="l">matafuegos terminados en 2035 (25,7 % de lo nuevo)</div></div>
-    <div class="tile"><div class="v">213.430</div><div class="l">cilindros vacíos en 2035 (74,3 % de lo nuevo, desde 2028)</div></div>
-    <div class="tile"><div class="v">371.908</div><div class="l">recargas en 2035 · 6.830 en 2026</div></div>
+<section class="frame aibg" id="f-plan" data-x="120" data-y="2900">
+  <h1 class="pp-title">Plan de producción</h1>
+  <div class="pp-grid">
+    <div class="pp-stats">
+      <div class="pp-stat"><div class="v">12,9<span>%</span></div><div class="l">Planta industrial<br><em>matafuegos y cilindros nuevos</em></div></div>
+      <div class="pp-stat"><div class="v">87,1<span>%</span></div><div class="l">Planta comercial<br><em>recargas</em></div></div>
+    </div>
+    <div class="pp-chart"><svg id="ch-total" viewBox="0 0 1180 600" width="100%" height="600"></svg></div>
   </div>
-  <div class="cols" style="margin-top:26px">
-    <div class="chart"><h2>Unidades nuevas por año</h2><div class="legend"><span><i style="background:#e8341c"></i>Matafuegos terminados</span><span><i style="background:#ff8a4a"></i>Cilindros vacíos</span></div><svg id="ch-new" viewBox="0 0 860 430" width="100%" height="430"></svg></div>
-    <div class="chart"><h2>Recargas y revendidos por año</h2><div class="legend"><span><i style="background:#ffb039"></i>Recargas</span><span><i style="background:#6e6e74"></i>Matafuegos revendidos (CO₂, agua, AFFF…)</span></div><svg id="ch-rec" viewBox="0 0 860 430" width="100%" height="430"></svg></div>
-  </div>
-  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026 · Fuente: Proyecciones › Indexado Dim Técnico (demanda PxQ + reservas y sustitutos IRAM 9.4.5)</div>
+  <div class="foot">Unidades por año · 2026 – 2035</div>
 </section>
 
-<section class="frame" id="f-mix" data-x="2240" data-y="2900">
+<section class="frame aibg" id="f-mix" data-x="2240" data-y="2900">
   <div class="num">03</div>
   <div class="eyebrow">Plan de producción · mezcla</div>
   <h1>Qué se fabrica en 2035</h1>
@@ -254,7 +261,7 @@ svg.explore .part:not(.sel){opacity:.35}
   <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026</div>
 </section>
 
-<section class="frame" id="f-est" data-x="4360" data-y="2900">
+<section class="frame aibg" id="f-est" data-x="4360" data-y="2900">
   <div class="num">03</div>
   <div class="eyebrow">Estacionalidad</div>
   <h1>Perfil mensual de producción</h1>
@@ -272,7 +279,7 @@ svg.explore .part:not(.sel){opacity:.35}
       </div>
     </div>
   </div>
-  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026 · Fuente: FLAMA_MRP › ESTACIONALIDAD (perfiles E01–E03)</div>
+  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026</div>
 </section>
 
 <!-- 5 LOCALIZACIÓN -->
@@ -500,7 +507,17 @@ function bars(id,series,colors,opt){const svg=document.getElementById(id);const 
   YEARS.forEach((yr,i)=>{let base=0;const x=L+step*i+(step-bw)/2;series.forEach((s,k)=>{const h=sc(0)-sc(s[i]);svg.append(S("rect",{x,y:sc(base+s[i]),width:bw,height:h,fill:colors[k]}));base+=s[i];});
     svg.append(S("text",{x:x+bw/2,y:sc(base)-6,'text-anchor':"middle",fill:"#ececea",'font-size':13,'font-family':"Inter Tight, Inter, sans-serif",'font-weight':600},fmt(base)));
     svg.append(S("text",{x:x+bw/2,y:H-B+22,'text-anchor':"middle",fill:"#9b9b9f",'font-size':15,'font-family':"Inter, sans-serif"},yr));});}
-bars("ch-new",[NUEVOS,CIL],["#e8341c","#ff8a4a"]);bars("ch-rec",[REC,REV],["#ffb039","#6e6e74"]);
+(function(){const svg=document.getElementById("ch-total");if(!svg)return;const TOT=YEARS.map((_,i)=>NUEVOS[i]+CIL[i]+REC[i]);const W=1180,H=600,L=40,R=230,T=70,B=60;const max=700000;
+  const sx=i=>L+(W-L-R)*i/9,sy=v=>(H-B)-(v/max)*(H-B-T);
+  for(let v=0;v<=max;v+=175000)svg.append(S("line",{x1:L,x2:W-R,y1:sy(v),y2:sy(v),stroke:"rgba(255,255,255,.08)"}));
+  YEARS.forEach((y,i)=>svg.append(S("text",{x:sx(i),y:H-B+34,'text-anchor':"middle",fill:"#9b9b9f",'font-size':22,'font-family':"Inter, sans-serif"},y)));
+  const id="gl"+Math.random().toString(36).slice(2,7);svg.append(S("defs",{},[S("linearGradient",{id,x1:0,y1:0,x2:0,y2:1},[S("stop",{offset:"0",'stop-color':"#e8341c",'stop-opacity':.45}),S("stop",{offset:"1",'stop-color':"#e8341c",'stop-opacity':0})])]));
+  const pts=TOT.map((v,i)=>[sx(i),sy(v)]);const d=pts.map((p,i)=>(i?"L":"M")+p[0]+" "+p[1]).join(" ");
+  svg.append(S("path",{d:d+` L${sx(9)} ${sy(0)} L${sx(0)} ${sy(0)} Z`,fill:`url(#${id})`}));
+  svg.append(S("path",{d,fill:"none",stroke:"#ff4a2b",'stroke-width':6,'stroke-linejoin':"round",'stroke-linecap':"round"}));
+  pts.forEach((p,i)=>svg.append(S("circle",{cx:p[0],cy:p[1],r:i===9||i===0?9:5,fill:i===9||i===0?"#fff":"#ff4a2b"})));
+  svg.append(S("text",{x:sx(9)+18,y:sy(TOT[9])+12,fill:"#fff",'font-size':40,'font-weight':700,'font-family':"Inter Tight, Inter, sans-serif",'letter-spacing':-1},fmt(TOT[9])));
+  svg.append(S("text",{x:sx(0)+16,y:sy(TOT[0])-18,fill:"#fff",'font-size':30,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},fmt(TOT[0])));})();
 function hbars(id,data,color){const svg=document.getElementById(id);const W=860,L=210,R=110;const max=data[0][1];const rh=52,gap=18;
   data.forEach((d,i)=>{const y=20+i*(rh+gap);const w=(W-L-R)*d[1]/max;const pct=(d[1]/data.reduce((a,x)=>a+x[1],0)*100).toFixed(1).replace(".",",");
     svg.append(S("text",{x:L-14,y:y+rh/2+7,'text-anchor':"end",fill:"#ececea",'font-size':22,'font-family':"Inter Tight, Inter, sans-serif",'font-weight':600},d[0]),S("rect",{x:L,y,width:Math.max(w,3),height:rh,fill:color,opacity:1-i*.14}),S("text",{x:L+Math.max(w,3)+10,y:y+rh/2+7,fill:"#ececea",'font-size':19,'font-family':"Inter, sans-serif"},`${fmt(d[1])} · ${pct} %`));});}
