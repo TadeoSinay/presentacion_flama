@@ -160,6 +160,13 @@ svg.explore .part:not(.sel){opacity:.35}
 .aibg>*{position:relative;z-index:1}
 .pp-title{font-size:88px;margin:0 0 30px}
 .rse-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-bottom:34px}
+.rse-top{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-bottom:30px}
+.rse-top .pp-stat .v{font-size:104px}
+.rse-top .pp-stat .l{font-size:23px}
+.rse-grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:26px}
+.rse-grid2 .chart{padding:22px 26px;min-height:380px}
+.rse-grid2 h2{font-size:27px;margin-bottom:10px;color:var(--red2)}
+.rse-note{font-size:18px;color:var(--muted);line-height:1.4;margin-top:8px}
 .rse-stats .pp-stat .v{font-size:120px}
 .rse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
 .rse-grid .chart{padding:22px 26px}
@@ -287,29 +294,18 @@ svg.explore .part:not(.sel){opacity:.35}
 
 <section class="frame aibg" id="f-rse" data-x="4360" data-y="4320">
   <h1 class="pp-title">RSE y tratamiento de efluentes</h1>
-  <div class="rse-stats">
-    <div class="pp-stat"><div class="v">85<span>%</span></div><div class="l">del polvo ABC se recupera<br><em>solo se repone el 14,9 % de cada carga</em></div></div>
-    <div class="pp-stat"><div class="v">0</div><div class="l">vuelco de efluentes de pintura<br><em>recirculación y filtrado en circuito cerrado</em></div></div>
-    <div class="pp-stat"><div class="v">81<span>t</span></div><div class="l">de chatarra valorizada por año<br><em>recipientes inutilizados → chatarrera habilitada</em></div></div>
+  <div class="rse-top">
+    <div class="pp-stat"><div class="v">0<span>L</span></div><div class="l">de AFFF a cloaca<br><em>PFAS → termodestrucción &gt; 1.100 °C</em></div></div>
+    <div class="pp-stat"><div class="v">81<span>t</span></div><div class="l">chatarra ferrosa reciclada / año<br><em>USD 20.307 de ingreso</em></div></div>
+    <div class="pp-stat"><div class="v">≥ 99<span>%</span></div><div class="l">de partículas retenidas<br><em>filtro de manga en granallado</em></div></div>
+    <div class="pp-stat"><div class="v">0,49<span>USD</span></div><div class="l">costo ambiental neto por matafuego<br><em>NCA 24 · 2ª categoría OPDS</em></div></div>
   </div>
-  <div class="rse-grid">
-    <div class="chart"><h2>Efluentes líquidos</h2><ul class="rse-list">
-      <li>Pintura: recirculación + filtrado, sin vuelco a cloaca.</li>
-      <li>Limpieza y fosfatizado: floculación y vuelco a red con pH 6–9.</li>
-      <li>Ensayo hidráulico: agua en circuito cerrado; en recargas va a cámara decantadora.</li>
-      <li>AFFF y clase K con enjuague: IBC de 1.000 L a operador habilitado.</li></ul></div>
-    <div class="chart"><h2>Residuos especiales · Ley 11.720 PBA</h2><ul class="rse-list">
-      <li>Polvo ABC de descarte en big bags: retiro semanal por operador habilitado.</li>
-      <li>Y12 polvo de pintura · Y17 lodo de granallado · Y8/Y9 aceites · Y48 sólidos impregnados.</li>
-      <li>HCFC contaminado en cilindro propio, nunca venteado.</li>
-      <li>Un solo retiro semanal para residuos y scrap: contenedor de 2,5 m³.</li></ul></div>
-    <div class="chart"><h2>Compromiso</h2><ul class="rse-list">
-      <li>Sustituto en préstamo: el cliente nunca queda sin protección contra incendios.</li>
-      <li>Trazabilidad por n° de serie y certificación IRAM en cada equipo.</li>
-      <li>Zona ATEX 22 con ventilación forzada; EPP por sector (Ley 19.587 · Dec. 351/79).</li>
-      <li>Gases con proveedor certificado y reciclado de N₂ y CO₂ en cilindros retornables.</li></ul></div>
+  <div class="rse-grid2">
+    <div class="chart"><h2>Planta de tratamiento de efluentes industriales</h2><svg id="pti" viewBox="0 0 1080 150" width="100%" height="170"></svg>
+      <div class="rse-note">Enjuague pre‑pintura → tratamiento → red cloacal con permiso ADA (Dec. 878/03: pH 6,5–9,5 · grasas &lt; 50 mg/L · SST &lt; 200 mg/L). Agua de prueba hidráulica limpia y sanitarias en redes separadas; pluviales con trampa de hidrocarburos.</div></div>
+    <div class="chart"><h2>Residuos especiales · Ley 11.720 PBA</h2><svg id="resid" viewBox="0 0 760 300" width="100%" height="300"></svg></div>
   </div>
-  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026</div>
+  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026 · Plan de contingencia ISO 14001 · KPIs mensuales · HCFC‑123 bajo Protocolo de Montreal</div>
 </section>
 
 <!-- 7 CIERRE -->
@@ -545,6 +541,16 @@ hbars("ch-mix1",MIX1,"#e8341c");hbars("ch-mix2",MIX2,"#ff8a4a");
   EST.forEach(([c,v])=>{svg.append(S("path",{d:v.map((p,i)=>(i?"L":"M")+sx(i)+" "+sy(p)).join(" "),fill:"none",stroke:c,'stroke-width':4,'stroke-linejoin':"round"}));v.forEach((p,i)=>svg.append(S("circle",{cx:sx(i),cy:sy(p),r:5,fill:c})));});
   svg.append(S("rect",{x:sx(11)-40,y:T,width:70,height:H-B-T,fill:"#e8341c",opacity:.08}),S("rect",{x:sx(0)-30,y:T,width:70,height:H-B-T,fill:"#e8341c",opacity:.08}));})();
 
+/* ---------- RSE: diagramas ---------- */
+(function(){const svg=document.getElementById("pti");if(!svg)return;const steps=["Ecualización","Ajuste de pH","Coagulación · PAC","Decantación","Filtración","Control · vuelco"];const n=steps.length,W=1080,bw=166,gap=(W-n*bw)/(n-1);
+  steps.forEach((t,i)=>{const x=i*(bw+gap);const last=i===n-1;svg.append(S("rect",{x,y:30,width:bw,height:70,rx:14,fill:last?"#e8341c":"rgba(255,255,255,.08)",stroke:last?"#e8341c":"rgba(255,255,255,.18)"}));
+    const parts=t.split(" · ");parts.forEach((pt,k)=>svg.append(S("text",{x:x+bw/2,y:parts.length>1?(58+k*24):72,'text-anchor':"middle",fill:"#fff",'font-size':19,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},pt)));
+    svg.append(S("text",{x:i===0?x:(last?x+bw:x+bw/2),y:132,'text-anchor':i===0?"start":(last?"end":"middle"),fill:"#9b9b9f",'font-size':16,'font-family':"Inter, sans-serif"},["2 m³ · homogeneiza","HCl / NaOH · 7–8","flocula aceites y sólidos","lamelar · lodo → Y12","arena + carbón","pH en línea · lab mensual"][i]));
+    if(!last)svg.append(S("path",{d:`M${x+bw+6} 65 l${gap-12} 0 m-10 -8 l10 8 -10 8`,fill:"none",stroke:"#ff6a2b",'stroke-width':3}));});})();
+(function(){const svg=document.getElementById("resid");if(!svg)return;const rows=[["Y45","AFFF / PFAS","5.500 L","Termodestrucción",true],["Y17","Polvo de granallado","4.000 kg","Horno cementero",false],["Y12","Polvo de pintura","480 kg","Vuelve a Sinteplast",false],["Y8 · Y9","Aceites y emulsiones","1.350 L","Re‑refinado",false],["Y48","Trapos, filtros, EPP","300 kg","Incineración",false],["Y31","Baterías","canje","Proveedor 1:1",false]];
+  rows.forEach((r,i)=>{const y=8+i*48;svg.append(S("rect",{x:0,y,width:86,height:38,rx:8,fill:r[4]?"#e8341c":"rgba(255,255,255,.1)"}),S("text",{x:43,y:y+26,'text-anchor':"middle",fill:"#fff",'font-size':20,'font-weight':700,'font-family':"Inter Tight, Inter, sans-serif"},r[0]));
+    svg.append(S("text",{x:100,y:y+26,fill:"#ececea",'font-size':21,'font-family':"Inter, sans-serif"},r[1]),S("text",{x:440,y:y+26,'text-anchor':"end",fill:"#fff",'font-size':21,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},r[2]));
+    svg.append(S("path",{d:`M458 ${y+19} l40 0 m-8 -7 l8 7 -8 7`,fill:"none",stroke:"#ff6a2b",'stroke-width':2.5}),S("text",{x:514,y:y+26,fill:r[4]?"#ff6a2b":"#c8c8cc",'font-size':20,'font-weight':r[4]?700:500,'font-family':"Inter, sans-serif"},r[3]));});})();
 /* ---------- plano: zonas ---------- */
 const planimg=document.getElementById("planimg");
 GRUPOS.forEach(g=>{g.els=g.rects.map(r=>{const d=document.createElement("div");d.className="zone";d.style.cssText=`left:${r[0]}%;top:${r[1]}%;width:${r[2]}%;height:${r[3]}%`;planimg.append(d);return d;});});
