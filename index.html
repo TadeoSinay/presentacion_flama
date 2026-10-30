@@ -580,7 +580,7 @@ function zoomHotspot(frame,h,meta){const b=imgBox(frame,frame.imgDims);let [x,y,
   const pad=h.c?.6:.25;const rect={x:b.x+(x-w*pad)*b.s,y:b.y+(y-hh*pad)*b.s,w:w*(1+2*pad)*b.s,h:hh*(1+2*pad)*b.s};
   zoomed=h.id;fit(rect);cap.innerHTML=`<b>${meta.t}</b>${meta.d||""}<span class="capx">Clic fuera de la pieza o Esc para volver a la lámina</span>`;cap.classList.add("on");
   document.querySelectorAll(".hsb.sel").forEach(e=>e.classList.remove("sel"));frame.querySelector(`.hsb[data-id="${h.id}"]`).classList.add("sel");}
-function addZoom(frameId,dims,z,i){const fr=document.getElementById(frameId);const b=imgBox(fr,dims);let [x,y,w,h]=z.r;const pad=z.pad!=null?z.pad:(i===0?.3:.55);
+function addZoom(frameId,dims,z,i){return; /* zooms secuenciales del catálogo desactivados (pedido 30/10); el clic sobre las piezas sigue funcionando */const fr=document.getElementById(frameId);const b=imgBox(fr,dims);let [x,y,w,h]=z.r;const pad=z.pad!=null?z.pad:(i===0?.3:.55);
   const H=h*(1+2*pad);let Y=y-h*pad;if(Y+H>dims.h)Y=dims.h-H;if(Y<0)Y=0;
   add({x:b.x+(x-w*pad)*b.s,y:b.y+Y*b.s,w:w*(1+2*pad)*b.s,h:H*b.s},{cap:z.cap});}
 function zoomOut(){if(!zoomed)return;zoomed=null;document.querySelectorAll(".hsb.sel").forEach(e=>e.classList.remove("sel"));go(cur,true);}
