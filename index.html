@@ -715,8 +715,11 @@ function setupPlan(P){const fr=document.getElementById(P.frame),svg=document.get
     r.dots={};r.stops.forEach(st=>{if(r.dots[st.p])return;const bb=P.puestos[st.p].bb;const cx=(P.mx(bb[0])+P.mx(bb[2]))/2,cy=(P.my(bb[1])+P.my(bb[3]))/2;const rr=P.pxm*0.26;const d=sv("g",{"data-p":st.p},"pdot"+(blk?" blk":""));
       d.append(sv("circle",{cx,cy,r:rr},"ring"));d.append(sv("circle",{cx,cy,r:rr*0.7},"core"));d.querySelectorAll("circle").forEach(c=>c.style.strokeWidth=(rr*0.2)+"px");d.addEventListener("click",e=>{e.stopPropagation();showPop(P,st.p,e.clientX,e.clientY,d);});g.append(d);r.dots[st.p]=d;});
     g.style.display="none";});}
-function showRoute(P,ri,k,all){P.routes.forEach((r,i)=>{const on=i===ri;r.g.style.display=on?"":"none";r.g.classList.remove("pulse");if(!on)return;
-  r.stops.forEach((st,j)=>{const vis=all||j<=k;const stat=all||j<k;[...st.arrs,...st.heads].forEach(a=>{a.classList.toggle("static",stat);a.classList.toggle("on",vis);});});
+let routeT=null;
+function showRoute(P,ri,k,all){clearTimeout(routeT);P.routes.forEach((r,i)=>{const on=i===ri;r.g.style.display=on?"":"none";r.g.classList.remove("pulse");if(!on)return;
+  /* en cada puesto: solo la flecha de entrada (tramo k) y, después, la de salida (tramo k+1); el resto oculto. Al cierre: todas. */
+  r.stops.forEach((st,j)=>{const vis=all||j===k;[...st.arrs,...st.heads].forEach(a=>{a.classList.toggle("static",all);a.classList.toggle("on",vis);});});
+  if(!all&&r.stops[k+1])routeT=setTimeout(()=>{[...r.stops[k+1].arrs,...r.stops[k+1].heads].forEach(a=>{a.classList.remove("static");a.classList.add("on");});},1700);
   Object.values(r.dots).forEach(d=>{d.classList.add("on");d.classList.remove("cur");});if(!all)r.dots[r.stops[k].p].classList.add("cur");});}
 function tourEnter(P,ri,k){const r=P.routes[ri],st=r.stops[k],p=P.puestos[st.p];closePop();psum.classList.remove("on");pperfil.classList.remove("on");setZone(null);showRoute(P,ri,k,false);if(P.crane)P.crane.set(p.anim||null);
   plabel.querySelector(".pr").textContent=r.title+" · "+(k+1)+" / "+r.stops.length;plabel.querySelector(".pn").textContent=p.n;plabel.querySelector(".pd").textContent=p.d;plabel.classList.toggle("bn",!!p.bn);plabel.classList.add("on");
