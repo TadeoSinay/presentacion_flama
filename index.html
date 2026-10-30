@@ -569,13 +569,7 @@ setupCatalog("f-c3","hsl3",PRODUCTS[2],CAT3_HS,CAT2_IMG);
  {r:[440,0,620,480],pad:.3,cap:"<b>Zoom 2 · Conjunto de válvula</b>Válvula HZ armada en latón forjado: 05 espiga · 06 collarín · 07 cuerpo · 08 manómetro (1,2–1,6 MPa) · 09 vástago · 10 resorte · 13 manija de accionamiento · 14 manija de transporte · 12 pasador de seguridad · 16 tobera directa."},
  {r:[20,728,1460,310],pad:.04,cap:"<b>Zoom 3 · Rotulado y soporte vehicular</b>17 etiqueta de características (IRAM 3536) · 18 oblea DPS/PBA · 19 estampilla IRAM · 20 etiqueta de serie GS1 · tarjeta AGC de CABA · soporte vehicular con cierre rápido y marbete blanco 2027."},
 ].forEach((z,i)=>addZoom("f-c1",CAT_IMG,z,i));
-add(F("f-c2"),{cap:"<b>ABC 10 kg · catálogo</b>Conjuntos y componentes del matafuego portátil de 10 kg con manguera; rotulado e identificación (etiqueta, oblea DPS/PBA, estampilla IRAM, serie GS1, tarjeta AGC y marbete)."});
-[
- {r:[565,245,260,495],cap:"<b>Zoom 1 · Recipiente + caño de pesca</b>01 cuerpo (virola) · 02 cúpula en chapa LAF 1,6 mm · 03 fondo 2,0 mm · 04 cuello roscado M30 × 1,5 · 15 caño de pesca de PVC rígido. Recipiente de 12,5 L, 5,43 kg, 1 costura longitudinal + 2 transversales MAG, ensayo hidráulico 3,5 MPa."},
- {r:[445,80,470,610],cap:"<b>Zoom 2 · Descarga y seguridad</b>16 racor de latón en la válvula · 17 manguera de caucho NBR · 18 tobera con portatobera · 19 suncho portatobera abrazado al cuerpo · 27 precinto de fábrica. Conducción del polvo y sello de seguridad."},
- {r:[520,0,560,350],cap:"<b>Zoom 3 · Válvula y accionamiento</b>Válvula HZ M30 en latón forjado: 05 espiga · 06 collarín · 07 cuerpo · 08 manómetro (1,2–1,6 MPa) · 09 vástago · 10 resorte · 12 pasador de seguridad · 13 manija de accionamiento · 14 manija de transporte."},
- {r:[15,758,1515,260],pad:.04,cap:"<b>Zoom 4 · Rotulado e identificación</b>20 etiqueta de características (IRAM 3536) · 21 oblea DPS/PBA · 22 estampilla IRAM · 24 serie GS1 · 23 tarjeta AGC de CABA · marbete blanco 2027."},
-].forEach((z,i)=>addZoom("f-c2",CAT2_IMG,z,i));
+
 add(F("f-c3"),{cap:"<b>ABC 100 kg · catálogo</b>Conjuntos y componentes del matafuego rodante de 100 kg: recipiente, válvula y descarga, carro integrado, y rotulado e identificación."});
 [
  {r:[650,555,460,180],cap:"<b>Zoom 1 · Conjunto ruedas</b>06 pata delantera · 07 triángulos con V · 08 caño del eje · 09 neumáticos macizos Ø 400 · 10 llanta con disco · 11 eje de ruedas SAE 1045 de 1\"."},
@@ -591,6 +585,14 @@ GRUPOS.forEach((g,i)=>{const b=imgBox(document.getElementById("f-plano"),PLAN_IM
   const pad=g.key==="todo"?0:.08;const rect={x:b.x+(x-w*pad)*b.s,y:b.y+(y-h*pad)*b.s,w:w*(1+2*pad)*b.s,h:h*(1+2*pad)*b.s};
   add(g.key==="todo"?plano:rect,{enter:()=>setZone(g.key==="todo"?null:g.key)});});
 add(F("f-fin"));
+add(F("f-c2"),{cap:"<b>ABC 10 kg · catálogo</b>Conjuntos y componentes del matafuego portátil de 10 kg con manguera; rotulado e identificación (etiqueta, oblea DPS/PBA, estampilla IRAM, serie GS1, tarjeta AGC y marbete)."});
+[
+ {r:[565,245,260,495],cap:"<b>Zoom 1 · Recipiente + caño de pesca</b>01 cuerpo (virola) · 02 cúpula en chapa LAF 1,6 mm · 03 fondo 2,0 mm · 04 cuello roscado M30 × 1,5 · 15 caño de pesca de PVC rígido. Recipiente de 12,5 L, 5,43 kg, 1 costura longitudinal + 2 transversales MAG, ensayo hidráulico 3,5 MPa."},
+ {r:[445,80,470,610],cap:"<b>Zoom 2 · Descarga y seguridad</b>16 racor de latón en la válvula · 17 manguera de caucho NBR · 18 tobera con portatobera · 19 suncho portatobera abrazado al cuerpo · 27 precinto de fábrica. Conducción del polvo y sello de seguridad."},
+ {r:[520,0,560,350],cap:"<b>Zoom 3 · Válvula y accionamiento</b>Válvula HZ M30 en latón forjado: 05 espiga · 06 collarín · 07 cuerpo · 08 manómetro (1,2–1,6 MPa) · 09 vástago · 10 resorte · 12 pasador de seguridad · 13 manija de accionamiento · 14 manija de transporte."},
+ {r:[15,758,1515,260],pad:.04,cap:"<b>Zoom 4 · Rotulado e identificación</b>20 etiqueta de características (IRAM 3536) · 21 oblea DPS/PBA · 22 estampilla IRAM · 24 serie GS1 · 23 tarjeta AGC de CABA · marbete blanco 2027."},
+].forEach((z,i)=>addZoom("f-c2",CAT2_IMG,z,i));
+
 const OVERVIEW={x:0,y:0,w:11000,h:7200};
 function setZone(key){document.getElementById("dim").classList.toggle("on",!!key);GRUPOS.forEach(g=>{const on=g.key===key;g.els.forEach(e=>e.classList.toggle("on",on));});}
 let cur=0,overview=false;
