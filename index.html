@@ -719,11 +719,11 @@ function tourEnter(P,ri,k){const r=P.routes[ri],st=r.stops[k],p=P.puestos[st.p];
   clearTimeout(tourT);if(tourLast&&tourLast.P===P&&tourLast.route===ri&&Math.abs(tourLast.k-k)===1){fit(padR(union(tourLast.rect,st.rect),.06));tourT=setTimeout(()=>fit(st.rect),1250);}
   tourLast={P,route:ri,k,rect:st.rect};}
 function tourFull(P,ri){if(P.crane)P.crane.set(null);const r=P.routes[ri];closePop();plabel.classList.remove("on");psum.classList.remove("on");setZone(null);showRoute(P,ri,0,true);r.g.classList.add("pulse");tourLast=null;clearTimeout(tourT);
-  plabel.querySelector(".pr").textContent="Recorrido completo";plabel.querySelector(".pn").textContent=r.title;plabel.querySelector(".pd").textContent=r.tot.n+" puestos · "+r.tot.m+" m";plabel.classList.add("on");}
+  plabel.querySelector(".pr").textContent="Recorrido completo";plabel.querySelector(".pn").textContent=r.title;plabel.querySelector(".pd").textContent=r.tot.n+" puestos";plabel.classList.add("on");}
 function tourSum(P,ri){if(P.crane)P.crane.set(null);const r=P.routes[ri];closePop();plabel.classList.remove("on");setZone(null);showRoute(P,ri,0,true);r.g.classList.add("pulse");tourLast=null;clearTimeout(tourT);
   psum.querySelector(".pr").textContent="Recorrido completo";psum.querySelector("h3").textContent=r.title;psum.querySelector(".ps").textContent=r.sub;
   const row=psum.querySelector(".row");row.innerHTML="";const st=(v,u,k)=>{row.insertAdjacentHTML("beforeend",`<div class="st"><div class="sv">${v}${u?`<small>${u}</small>`:""}</div><div class="sk">${k}</div></div>`);};
-  st(r.tot.n,"","puestos");if(r.tot.mq)st(r.tot.mq,"","máquinas");if(r.tot.op)st(r.tot.op,"","operarios");if(r.tot.mu&&r.tot.mu!=="0,0")st(r.tot.mu,"min","minutos por unidad");st(r.tot.m,"m","distancia recorrida");if(r.tot.hh)st(r.tot.hh,r.tot.hk?"":"h‑h/día",r.tot.hk||"horas‑hombre cargadas");
+  st(r.tot.n,"","puestos");if(r.tot.mq)st(r.tot.mq,"","máquinas");if(r.tot.op)st(r.tot.op,"","operarios");if(r.tot.mu&&r.tot.mu!=="0,0")st(r.tot.mu,"min","minutos por unidad");
   psum.classList.add("on");}
 function tourHide(){pperfil.classList.remove("on");if(IND.crane)IND.crane.set(null);plabel.classList.remove("on");psum.classList.remove("on");closePop();clearTimeout(tourT);tourLast=null;}
 function hideRoutes(P){P.routes.forEach(r=>r.g.style.display="none");}
