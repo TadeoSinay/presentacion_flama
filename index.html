@@ -342,8 +342,8 @@ svg.explore .part:not(.sel){opacity:.35}
 <section class="frame aibg" id="f-mix" data-x="2240" data-y="2900">
   <h1 class="pp-title">Mix productivo y estacionalidad</h1>
   <div class="mx-grid">
-    <div class="chart"><h2>Matafuegos terminados · 2035 · 74.000 u</h2><svg id="ch-mix1" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
-    <div class="chart"><h2>Cilindros vacíos · 2035 · 213.000 u</h2><svg id="ch-mix2" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
+    <div class="chart"><h2>Matafuegos terminados · Año 10 · 74.000 u</h2><svg id="ch-mix1" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
+    <div class="chart"><h2>Cilindros vacíos · Año 10 · 213.000 u</h2><svg id="ch-mix2" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
     <div class="chart mx-wide"><h2>Perfil mensual de producción</h2>
       <div class="legend"><span><i style="background:#e8341c"></i>Automovilístico (1 kg)</span><span><i style="background:#ffb039"></i>Manual comercial (2,5 / 5 / 10 kg)</span><span><i style="background:#8fb6ff"></i>Industrial sobre ruedas (25–100 kg)</span></div>
       <svg id="ch-est" viewBox="0 0 1700 300" width="100%" height="250"></svg></div>
@@ -603,7 +603,7 @@ function bars(id,series,colors,opt){const svg=document.getElementById(id);const 
     pts.forEach((p,i)=>{svg.append(S("circle",{cx:p[0],cy:p[1],r:6,fill:c}));svg.append(S("text",{x:p[0],y:p[1]+dy,'text-anchor':"middle",fill:c,'font-size':19,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},fmt(D[i])));});
     svg.append(S("g",{transform:`translate(${L+k*480},${28})`},[S("rect",{x:0,y:-8,width:34,height:6,rx:3,fill:c}),S("text",{x:44,y:0,fill:"#ececea",'font-size':22,'font-family':"Inter, sans-serif"},name)]));});})();
 function hbars(id,data,color){const svg=document.getElementById(id);if(!svg)return;const W=860,L=230,R=370;const max=data[0][1];const rh=56,gap=16;const tot=data.reduce((a,x)=>a+x[1],0);
-  data.forEach((d,i)=>{const y=14+i*(rh+gap);const w=Math.max((W-L-R)*d[1]/max,4);const pct=(d[1]/tot*100).toFixed(1).replace(".",",")+" %";
+  data.forEach((d,i)=>{const y=14+i*(rh+gap);const w=Math.max((W-L-R)*d[1]/max,4);const pct=Math.round(d[1]/tot*100)+" %";
     svg.append(S("text",{x:L-16,y:y+rh/2+9,'text-anchor':"end",fill:"#ececea",'font-size':26,'font-family':"Inter Tight, Inter, sans-serif",'font-weight':600},d[0]),S("rect",{x:L,y,width:w,height:rh,rx:6,fill:color,opacity:1-i*.14}));
     const vx=L+w+14;svg.append(S("text",{x:vx,y:y+rh/2+9,fill:"#ececea",'font-size':26,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},fmt(d[1])));
     const cx=W-120;svg.append(S("rect",{x:cx,y:y+6,width:110,height:rh-12,rx:8,fill:"rgba(255,255,255,.08)",stroke:"rgba(255,255,255,.18)"}),S("text",{x:cx+55,y:y+rh/2+9,'text-anchor':"middle",fill:"#fff",'font-size':25,'font-weight':700,'font-family':"Inter Tight, Inter, sans-serif"},pct));});}
