@@ -159,6 +159,10 @@ svg.explore .part:not(.sel){opacity:.35}
 .aibg::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(232,41,28,.18),transparent 25%,transparent 75%,rgba(232,41,28,.18))}
 .aibg>*{position:relative;z-index:1}
 .pp-title{font-size:88px;margin:0 0 30px}
+.mx-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.mx-grid .chart{padding:18px 22px}
+.mx-grid h2{font-size:26px;margin-bottom:6px}
+.mx-wide{grid-column:1/-1}
 .pp-grid{display:grid;grid-template-columns:420px 1fr;gap:60px;align-items:center}
 .pp-stats{display:grid;gap:40px}
 .pp-stat .v{font-family:var(--display);font-weight:700;font-size:150px;letter-spacing:-.05em;line-height:.95;color:#fff;font-variant-numeric:tabular-nums}
@@ -250,34 +254,13 @@ svg.explore .part:not(.sel){opacity:.35}
 </section>
 
 <section class="frame aibg" id="f-mix" data-x="2240" data-y="2900">
-  <div class="num">03</div>
-  <div class="eyebrow">Plan de producción · mezcla</div>
-  <h1>Qué se fabrica en 2035</h1>
-  <div class="cols">
-    <div class="chart"><h2>Matafuegos terminados · 73.902 u</h2><svg id="ch-mix1" viewBox="0 0 860 400" width="100%" height="400"></svg></div>
-    <div class="chart"><h2>Cilindros vacíos · 213.430 u</h2><svg id="ch-mix2" viewBox="0 0 860 400" width="100%" height="400"></svg></div>
-  </div>
-  <p class="lead" style="margin-top:26px">Manuales de 1 y 5 kg concentran el 85 % de los terminados; los rodantes (25 a 100 kg) son el 2,5 %, pero definen el carro, las ruedas y la línea de chapa gruesa. Los cilindros vacíos se venden a recargadores desde 2028 y triplican el volumen de cuerpos.</p>
-  <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026</div>
-</section>
-
-<section class="frame aibg" id="f-est" data-x="4360" data-y="2900">
-  <div class="num">03</div>
-  <div class="eyebrow">Estacionalidad</div>
-  <h1>Perfil mensual de producción</h1>
-  <div class="cols" style="grid-template-columns:1.25fr 1fr">
-    <div class="chart"><h2>Participación de cada mes (año 2035)</h2>
+  <h1 class="pp-title">Mezcla y estacionalidad</h1>
+  <div class="mx-grid">
+    <div class="chart"><h2>Matafuegos terminados · 2035 · 73.902 u</h2><svg id="ch-mix1" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
+    <div class="chart"><h2>Cilindros vacíos · 2035 · 213.430 u</h2><svg id="ch-mix2" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
+    <div class="chart mx-wide"><h2>Perfil mensual de producción</h2>
       <div class="legend"><span><i style="background:#e8341c"></i>Automovilístico (1 kg)</span><span><i style="background:#ffb039"></i>Manual comercial (2,5 / 5 / 10 kg)</span><span><i style="background:#8fb6ff"></i>Industrial sobre ruedas (25–100 kg)</span></div>
-      <svg id="ch-est" viewBox="0 0 900 440" width="100%" height="440"></svg></div>
-    <div>
-      <div class="kv" style="font-size:21px">
-        <b>Automotor</b><span>Pico en diciembre y enero (12 % cada uno) por verano y VTV; valle de mayo a noviembre (7–7,5 %).</span>
-        <b>Comercial</b><span>Diciembre 11 % y enero 10 %: cierre de habilitaciones y controles anuales. Resto del año casi plano (7–8,5 %).</span>
-        <b>Industrial</b><span>Más parejo: 7–9 % por mes, con algo más entre marzo y mayo y entre julio y agosto.</span>
-        <b>Mes pico 2035</b><span>ABC 1 kg: 3.849 u en diciembre (32.073/año). Manuales 2,5–10 kg: 4.402 u en diciembre (40.017/año). Rodantes: 163 u en marzo, abril y mayo (1.813/año).</span>
-        <b>Para la planta</b><span>El pico de diciembre define el dimensionamiento de carga y pintura (uso del 82 % en el mes pico contra 69 % promedio, límite 90 %); el stock de PT absorbe el resto.</span>
-      </div>
-    </div>
+      <svg id="ch-est" viewBox="0 0 1700 300" width="100%" height="250"></svg></div>
   </div>
   <div class="foot">FLAMA S.A. · Factibilidad técnica · 2026</div>
 </section>
@@ -516,15 +499,15 @@ function bars(id,series,colors,opt){const svg=document.getElementById(id);const 
     svg.append(S("path",{d,fill:"none",stroke:c,'stroke-width':5,'stroke-linejoin':"round",'stroke-linecap':"round"}));
     pts.forEach((p,i)=>{svg.append(S("circle",{cx:p[0],cy:p[1],r:6,fill:c}));svg.append(S("text",{x:p[0],y:p[1]+dy,'text-anchor':"middle",fill:c,'font-size':19,'font-weight':600,'font-family':"Inter Tight, Inter, sans-serif"},fmt(D[i])));});
     svg.append(S("g",{transform:`translate(${L+k*480},${28})`},[S("rect",{x:0,y:-8,width:34,height:6,rx:3,fill:c}),S("text",{x:44,y:0,fill:"#ececea",'font-size':22,'font-family':"Inter, sans-serif"},name)]));});})();
-function hbars(id,data,color){const svg=document.getElementById(id);const W=860,L=210,R=110;const max=data[0][1];const rh=52,gap=18;
+function hbars(id,data,color){const svg=document.getElementById(id);const W=860,L=210,R=200;const max=data[0][1];const rh=52,gap=18;
   data.forEach((d,i)=>{const y=20+i*(rh+gap);const w=(W-L-R)*d[1]/max;const pct=(d[1]/data.reduce((a,x)=>a+x[1],0)*100).toFixed(1).replace(".",",");
     svg.append(S("text",{x:L-14,y:y+rh/2+7,'text-anchor':"end",fill:"#ececea",'font-size':22,'font-family':"Inter Tight, Inter, sans-serif",'font-weight':600},d[0]),S("rect",{x:L,y,width:Math.max(w,3),height:rh,fill:color,opacity:1-i*.14}),S("text",{x:L+Math.max(w,3)+10,y:y+rh/2+7,fill:"#ececea",'font-size':19,'font-family':"Inter, sans-serif"},`${fmt(d[1])} · ${pct} %`));});}
 hbars("ch-mix1",MIX1,"#e8341c");hbars("ch-mix2",MIX2,"#ff8a4a");
-(function(){const svg=document.getElementById("ch-est");const W=900,H=440,L=70,R=20,T=20,B=48;const max=.13;const sx=i=>L+(W-L-R)*i/11,sy=v=>(H-B)-(v/max)*(H-B-T);
-  for(let v=0;v<=.12;v+=.02){svg.append(S("line",{x1:L,x2:W-R,y1:sy(v),y2:sy(v),stroke:"#2a2a2e"}),S("text",{x:L-8,y:sy(v)+5,'text-anchor':"end",fill:"#9b9b9f",'font-size':14,'font-family':"Inter, sans-serif"},Math.round(v*100)+" %"));}
-  MESES.forEach((m,i)=>svg.append(S("text",{x:sx(i),y:H-B+24,'text-anchor':"middle",fill:"#9b9b9f",'font-size':15,'font-family':"Inter, sans-serif"},m)));
+(function(){const svg=document.getElementById("ch-est");if(!svg)return;const W=1700,H=300,L=70,R=20,T=16,B=40;const max=.13;const sx=i=>L+(W-L-R)*i/11,sy=v=>(H-B)-(v/max)*(H-B-T);
+  for(let v=0;v<=.12;v+=.04){svg.append(S("line",{x1:L,x2:W-R,y1:sy(v),y2:sy(v),stroke:"rgba(255,255,255,.08)"}),S("text",{x:L-8,y:sy(v)+5,'text-anchor':"end",fill:"#9b9b9f",'font-size':15,'font-family':"Inter, sans-serif"},Math.round(v*100)+" %"));}
+  MESES.forEach((m,i)=>svg.append(S("text",{x:sx(i),y:H-B+26,'text-anchor':"middle",fill:"#9b9b9f",'font-size':17,'font-family':"Inter, sans-serif"},m)));
   EST.forEach(([c,v])=>{svg.append(S("path",{d:v.map((p,i)=>(i?"L":"M")+sx(i)+" "+sy(p)).join(" "),fill:"none",stroke:c,'stroke-width':4,'stroke-linejoin':"round"}));v.forEach((p,i)=>svg.append(S("circle",{cx:sx(i),cy:sy(p),r:5,fill:c})));});
-  svg.append(S("rect",{x:sx(11)-30,y:T,width:60,height:H-B-T,fill:"#e8341c",opacity:.08}),S("rect",{x:sx(0)-20,y:T,width:50,height:H-B-T,fill:"#e8341c",opacity:.08}));})();
+  svg.append(S("rect",{x:sx(11)-40,y:T,width:70,height:H-B-T,fill:"#e8341c",opacity:.08}),S("rect",{x:sx(0)-30,y:T,width:70,height:H-B-T,fill:"#e8341c",opacity:.08}));})();
 
 /* ---------- plano: zonas ---------- */
 const planimg=document.getElementById("planimg");
@@ -590,7 +573,7 @@ add(F("f-c3"),{cap:"<b>ABC 100 kg · catálogo</b>Conjuntos y componentes del ma
  {r:[15,758,1515,260],pad:.04,cap:"<b>Zoom 4 · Rotulado e identificación</b>31 etiqueta de características · 32 oblea DPS/PBA · 33 estampilla IRAM · 34 tarjeta AGC · 35 serie GS1 · marbete con lote."},
 ].forEach((z,i)=>addZoom("f-c3",CAT2_IMG,z,i));
 add(F("f-plan"),{cap:"<b>03 · Plan de producción</b>Producción = demanda proyectada (P×Q) + reservas y sustitutos IRAM 9.4.5. Los cilindros vacíos arrancan en 2028 y en 2035 ya son el 74 % de las unidades nuevas."});
-add(F("f-mix"));add(F("f-est"));
+add(F("f-mix"));
 add(F("f-l1"));add(F("f-l2"));
 const plano=F("f-plano");const PLAN_IMG={w:3700,h:4530};
 GRUPOS.forEach((g,i)=>{const b=imgBox(document.getElementById("f-plano"),PLAN_IMG);const bb=g.bbox;const x=bb[0]/100*PLAN_IMG.w,y=bb[1]/100*PLAN_IMG.h,w=bb[2]/100*PLAN_IMG.w,h=bb[3]/100*PLAN_IMG.h;
