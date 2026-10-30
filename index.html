@@ -6,7 +6,7 @@
 <meta name="description" content="FLAMA S.A. · Factibilidad técnica · Dimensionamiento técnico">
 <style>html{color-scheme:dark}body{margin:0;font-family:system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>FLAMA Factibilidad Técnica</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Montserrat:wght@800&family=Lora:ital,wght@0,700;1,400&display=swap">
 <style>
 /* Layout: un lienzo grande (canvas) con cuadros absolutos; una "cámara" CSS hace zoom y paneo entre pasos (estilo Prezi). Tema único oscuro, portada clara. */
 :root{
@@ -58,6 +58,14 @@ body{padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,e
 .cover .tagline{position:relative;color:var(--red);font-weight:600;letter-spacing:.02em;font-size:24px;margin:22px 0 10px}
 .cover .title{position:relative;font-family:var(--display);font-weight:700;font-size:84px;letter-spacing:-.04em;color:#1b1b1b;margin:6px 0 18px}
 .cover .authors{position:relative;color:#6e6e73;font-size:22px}
+.cover2{padding:0;background:#f6f5f2;color:#1b1b1b}
+.cover2 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover2 .flame{position:absolute;left:50%;top:188px;width:118px;height:148px;transform:translateX(-50%)}
+.cover2 .word{position:absolute;left:0;right:0;top:350px;text-align:center;font-family:"Montserrat",var(--display);font-weight:800;font-size:106px;letter-spacing:.16em;padding-left:.16em;color:#1a1a1f;line-height:1}
+.cover2 .word span{color:#e8341c}
+.cover2 .tag{position:absolute;left:0;right:0;top:494px;text-align:center;font-family:var(--body);font-weight:700;font-size:27px;letter-spacing:.22em;padding-left:.22em;color:#e8341c}
+.cover2 .ttl{position:absolute;left:0;right:0;top:572px;text-align:center;font-family:"Lora",Georgia,serif;font-weight:700;font-size:78px;letter-spacing:-.005em;color:#141416}
+.cover2 .aut{position:absolute;left:0;right:0;top:700px;text-align:center;font-family:"Lora",Georgia,serif;font-style:italic;font-size:23px;color:#555}
 /* equipo */
 .team{display:grid;grid-template-columns:repeat(4,1fr);gap:34px;margin-top:20px}
 .member{background:#1c1c1f;border-radius:26px;padding:40px 28px;text-align:center}
@@ -195,7 +203,14 @@ svg.explore .part:not(.sel){opacity:.35}
 <div id="stage"><div id="canvas">
 
 <!-- 0 PORTADA -->
-<section class="frame catimg" id="f-portada" data-x="3640" data-y="60"><img src="img/portada.png" alt="FLAMA · Dimensionamiento Técnico · Del Bono · Heredia · Infantino · Sinay — 2026"></section>
+<section class="frame cover2" id="f-portada" data-x="3640" data-y="60">
+  <img class="bg" src="img/portada_bg.jpg" alt="">
+  <svg class="flame" viewBox="0 0 120 150" aria-hidden="true"><path d="M58 4c8 34 50 44 50 92 0 28-22 48-50 48S8 124 8 96c0-18 9-30 18-40 2 20 12 28 20 28 16 0-12-44 12-80z" fill="#e8341c"/><path d="M60 64c5 20 26 28 26 50 0 14-12 24-26 24S34 128 34 114c0-10 5-16 10-22 1 10 6 14 10 14 8 0-5-22 6-42z" fill="#ff6a2b"/></svg>
+  <div class="word">FL<span>A</span>MA</div>
+  <div class="tag">Producción y recarga de matafuegos</div>
+  <div class="ttl">Dimensionamiento Técnico</div>
+  <div class="aut">Del Bono · Heredia · Infantino · Sinay — 2026</div>
+</section>
 
 <!-- 1 EQUIPO -->
 
