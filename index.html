@@ -212,6 +212,9 @@ svg.explore .part:not(.sel){opacity:.35}
 .indbox .arr,.planbox .arr{fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:stroke-dashoffset 1.4s var(--ease),opacity .4s}
 .indbox .arr,.planbox .arr.on{opacity:.92;stroke-dashoffset:0!important}
 .indbox .ahead,.planbox .ahead{opacity:0;transition:opacity .3s}
+@keyframes arrpulse{0%,100%{opacity:1}50%{opacity:.25}}
+.route.pulse .arr.on,.route.pulse .ahead.on{animation:arrpulse 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.route.pulse .arr.on,.route.pulse .ahead.on{animation:none}}
 .indbox .ahead,.planbox .ahead.on{opacity:.92;transition:opacity .3s 1.1s}
 .indbox .pdot,.planbox .pdot{cursor:pointer;opacity:0;transition:opacity .6s}
 .indbox .pdot,.planbox .pdot.on{opacity:1}
@@ -692,14 +695,16 @@ function setupPlan(P){const fr=document.getElementById(P.frame),svg=document.get
     r.dots={};r.stops.forEach(st=>{if(r.dots[st.p])return;const bb=P.puestos[st.p].bb;const cx=(P.mx(bb[0])+P.mx(bb[2]))/2,cy=(P.my(bb[1])+P.my(bb[3]))/2;const rr=P.pxm*0.26;const d=sv("g",{"data-p":st.p},"pdot"+(blk?" blk":""));
       d.append(sv("circle",{cx,cy,r:rr},"ring"));d.append(sv("circle",{cx,cy,r:rr*0.7},"core"));d.querySelectorAll("circle").forEach(c=>c.style.strokeWidth=(rr*0.2)+"px");d.addEventListener("click",e=>{e.stopPropagation();showPop(P,st.p,e.clientX,e.clientY,d);});g.append(d);r.dots[st.p]=d;});
     g.style.display="none";});}
-function showRoute(P,ri,k,all){P.routes.forEach((r,i)=>{const on=i===ri;r.g.style.display=on?"":"none";if(!on)return;
+function showRoute(P,ri,k,all){P.routes.forEach((r,i)=>{const on=i===ri;r.g.style.display=on?"":"none";r.g.classList.remove("pulse");if(!on)return;
   r.stops.forEach((st,j)=>{const vis=all||j<=k;st.arrs.forEach(a=>a.classList.toggle("on",vis));st.heads.forEach(a=>a.classList.toggle("on",vis));});
   Object.values(r.dots).forEach(d=>{d.classList.add("on");d.classList.remove("cur");});if(!all)r.dots[r.stops[k].p].classList.add("cur");});}
 function tourEnter(P,ri,k){const r=P.routes[ri],st=r.stops[k],p=P.puestos[st.p];closePop();psum.classList.remove("on");setZone(null);showRoute(P,ri,k,false);
   plabel.querySelector(".pr").textContent=r.title+" · "+(k+1)+" / "+r.stops.length;plabel.querySelector(".pn").textContent=p.n;plabel.querySelector(".pd").textContent=p.d;plabel.classList.add("on");
   clearTimeout(tourT);if(tourLast&&tourLast.P===P&&tourLast.route===ri&&Math.abs(tourLast.k-k)===1){fit(padR(union(tourLast.rect,st.rect),.06));tourT=setTimeout(()=>fit(st.rect),1250);}
   tourLast={P,route:ri,k,rect:st.rect};}
-function tourSum(P,ri){const r=P.routes[ri];closePop();plabel.classList.remove("on");setZone(null);showRoute(P,ri,0,true);tourLast=null;clearTimeout(tourT);
+function tourFull(P,ri){const r=P.routes[ri];closePop();plabel.classList.remove("on");psum.classList.remove("on");setZone(null);showRoute(P,ri,0,true);r.g.classList.add("pulse");tourLast=null;clearTimeout(tourT);
+  plabel.querySelector(".pr").textContent="Recorrido completo";plabel.querySelector(".pn").textContent=r.title;plabel.querySelector(".pd").textContent=r.tot.n+" puestos · "+r.tot.m+" m";plabel.classList.add("on");}
+function tourSum(P,ri){const r=P.routes[ri];closePop();plabel.classList.remove("on");setZone(null);showRoute(P,ri,0,true);r.g.classList.add("pulse");tourLast=null;clearTimeout(tourT);
   psum.querySelector(".pr").textContent="Recorrido completo";psum.querySelector("h3").textContent=r.title;psum.querySelector(".ps").textContent=r.sub;
   const row=psum.querySelector(".row");row.innerHTML="";const st=(v,u,k)=>{row.insertAdjacentHTML("beforeend",`<div class="st"><div class="sv">${v}${u?`<small>${u}</small>`:""}</div><div class="sk">${k}</div></div>`);};
   st(r.tot.n,"","puestos");st(r.tot.m,"m","distancia recorrida");if(r.tot.hh)st(r.tot.hh,r.tot.hk?"":"h‑h/día",r.tot.hk||"horas‑hombre cargadas");psum.classList.add("on");}
@@ -710,7 +715,7 @@ function showPop(P,key,x,y,dot){const p=P.puestos[key];if(tourPop===key&&ppop.cl
   const w=ppop.offsetWidth,h=ppop.offsetHeight;ppop.style.left=Math.max(12,Math.min(x+18,innerWidth-w-12))+"px";ppop.style.top=Math.max(12,Math.min(y+18,innerHeight-h-12))+"px";}
 function closePop(){ppop.classList.remove("on");tourPop=null;document.querySelectorAll(".pdot.sel").forEach(d=>d.classList.remove("sel"));}
 ppop.querySelector(".px").addEventListener("click",e=>{e.stopPropagation();closePop();});ppop.addEventListener("click",e=>e.stopPropagation());
-function addTour(P,sumRect){P.routes.forEach((r,ri)=>{r.stops.forEach((st,k)=>add(st.rect,{ind:true,enter:()=>tourEnter(P,ri,k),leave:()=>clearTimeout(tourT)}));add(sumRect,{ind:true,enter:()=>tourSum(P,ri)});});}
+function addTour(P,sumRect){P.routes.forEach((r,ri)=>{r.stops.forEach((st,k)=>add(st.rect,{ind:true,enter:()=>tourEnter(P,ri,k),leave:()=>clearTimeout(tourT)}));add(sumRect,{ind:true,enter:()=>tourFull(P,ri)});add(sumRect,{ind:true,enter:()=>tourSum(P,ri)});});}
 /* industrial: primero */
 const IND=PLANS.ind;IND.minW=18;IND.minH=10;setupPlan(IND);
 add(F("f-ind"),{ind:true,enter:()=>{tourHide();hideRoutes(IND);}});
