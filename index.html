@@ -342,8 +342,8 @@ svg.explore .part:not(.sel){opacity:.35}
 <section class="frame aibg" id="f-mix" data-x="2240" data-y="2900">
   <h1 class="pp-title">Mix productivo y estacionalidad</h1>
   <div class="mx-grid">
-    <div class="chart"><h2>Matafuegos terminados · 2035 · 73.902 u</h2><svg id="ch-mix1" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
-    <div class="chart"><h2>Cilindros vacíos · 2035 · 213.430 u</h2><svg id="ch-mix2" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
+    <div class="chart"><h2>Matafuegos terminados · 2035 · 74.000 u</h2><svg id="ch-mix1" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
+    <div class="chart"><h2>Cilindros vacíos · 2035 · 213.000 u</h2><svg id="ch-mix2" viewBox="0 0 860 400" width="100%" height="290"></svg></div>
     <div class="chart mx-wide"><h2>Perfil mensual de producción</h2>
       <div class="legend"><span><i style="background:#e8341c"></i>Automovilístico (1 kg)</span><span><i style="background:#ffb039"></i>Manual comercial (2,5 / 5 / 10 kg)</span><span><i style="background:#8fb6ff"></i>Industrial sobre ruedas (25–100 kg)</span></div>
       <svg id="ch-est" viewBox="0 0 1700 300" width="100%" height="250"></svg></div>
@@ -403,12 +403,12 @@ function markReveal(){document.querySelectorAll('.frame').forEach(f=>{if(f.class
   f.querySelectorAll(':scope > .eyebrow, :scope > h1, :scope > .lead, :scope > .tiles > *, :scope > .cols > *, :scope > .cols3 > *, :scope > .toc > *, :scope > .team > *, :scope > .cat > *, :scope > .map, :scope > .lot > *, :scope > .kv, :scope > .cover *, :scope > .logo, :scope > .tagline, :scope > .title, :scope > .authors, :scope > .plan > *').forEach(el=>{if(el.classList.contains('wave'))return;el.classList.add('rv');el.style.transitionDelay=(0.25+i*0.09)+'s';i++;});});}
 /* ---------- datos ---------- */
 const YEARS=[2026,2027,2028,2029,2030,2031,2032,2033,2034,2035];
-const NUEVOS=[6958,10965,13486,17551,27039,35199,45530,56351,64923,73902];
-const CIL=[0,0,9589,33407,61865,89704,126822,163940,183736,213430];
-const REC=[6830,30663,61483,114051,167870,228490,283778,322612,347004,371908];
+const NUEVOS=[7000,11000,13000,18000,27000,35000,46000,56000,65000,74000];
+const CIL=[0,0,10000,33000,62000,90000,127000,164000,184000,213000];
+const REC=[7000,31000,61000,114000,168000,228000,284000,323000,347000,372000];
 const REV=[1240,2191,2891,3926,6182,8427,10844,13436,15647,18011];
-const MIX1=[["ABC 1 kg",32073],["ABC 5 kg",30751],["ABC 2,5 kg",7425],["ABC 10 kg",1841],["Rodantes 25–100 kg",1813]];
-const MIX2=[["Cil. 1 kg",170548],["Cil. 5 kg",32915],["Cil. 2,5 kg",6669],["Cil. 10 kg",2011],["Cil. rodantes",1287]];
+const MIX1=[["ABC 1 kg",32000],["ABC 5 kg",31000],["ABC 2,5 kg",7000],["ABC 10 kg",2000],["Rodantes 25–100 kg",2000]];
+const MIX2=[["Cil. 1 kg",171000],["Cil. 5 kg",33000],["Cil. 2,5 kg",7000],["Cil. 10 kg",2000],["Cil. rodantes",1000]];
 const MESES=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 const EST=[["#e8341c",[.12,.09,.08,.075,.07,.07,.075,.075,.075,.075,.075,.12]],
            ["#ffb039",[.10,.08,.085,.085,.08,.075,.08,.08,.08,.075,.07,.11]],
